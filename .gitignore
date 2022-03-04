@@ -365,5 +365,5 @@ FodyWeavers.xsd
 # .idea folder
 .idea/
 
-./app-db.shm
-./app-db.wal
+ReversiMvc/app-db.shm
+ReversiMvc/app-db.wal
