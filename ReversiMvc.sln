@@ -1,8 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReversiMvc", "ReversiMvc.csproj", "{4E6BA9F3-93B4-4EEF-B5E0-E54BC8284CFD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReversiMvc", "ReversiMvc\ReversiMvc.csproj", "{4E6BA9F3-93B4-4EEF-B5E0-E54BC8284CFD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "..\Tests\Tests.csproj", "{69C605C9-99C9-4371-87F4-C20096AF417F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{69C605C9-99C9-4371-87F4-C20096AF417F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
