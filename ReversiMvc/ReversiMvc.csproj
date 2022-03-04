@@ -4,7 +4,7 @@
         <TargetFramework>net6.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-        <UserSecretsId>aspnet-ReversiMvc-91639E76-380A-4E59-BE1A-56971A569FB2</UserSecretsId>
+        <UserSecretsId>aspnet-ReversiMvc-DD891FCF-12D8-4CFD-86C9-7DD49C19ECB7</UserSecretsId>
     </PropertyGroup>
 
     <ItemGroup>
