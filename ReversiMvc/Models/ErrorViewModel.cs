@@ -1,4 +1,4 @@
-namespace ReversiMvc.Models;
+﻿namespace ReversiMvc.Models;
 
 public class ErrorViewModel
 {
