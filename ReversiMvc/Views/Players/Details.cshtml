@@ -1,0 +1,42 @@
+@model ReversiMvc.Models.Entities.PlayerEntity
+
+@{
+    ViewData["Title"] = $"Details van speler {Model.Name}";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div>
+    <h4>Speler details</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Victories)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Victories)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Losses)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Losses)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Draws)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Draws)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Guid">Bewerken</a> |
+    <a asp-action="Index">Terug naar spelers</a>
+</div>

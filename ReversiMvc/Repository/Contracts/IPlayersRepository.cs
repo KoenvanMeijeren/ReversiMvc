@@ -27,4 +27,10 @@ public interface IPlayersRepository : IRepository<PlayerEntity>
     /// <returns>The game.</returns>
     PlayerEntity? Get(string? token);
 
+    /// <summary>
+    /// Returns the database set of the specified T entity.
+    /// </summary>
+    /// <returns>The database set.</returns>
+    DbSet<PlayerEntity> GetDbSet();
+    
 }

@@ -13,6 +13,7 @@ public class PlayersDatabaseRepository : RepositoryDatabaseBase<PlayerEntity>, I
         this._players = context.Players;
     }
 
+    /// <inheritdoc />
     public PlayerEntity FirstOrCreate(PlayerEntity playerEntity)
     {
         var dbPlayer = this.Get(playerEntity.Guid);
@@ -36,5 +37,11 @@ public class PlayersDatabaseRepository : RepositoryDatabaseBase<PlayerEntity>, I
     public PlayerEntity? Get(string? guid)
     {
         return this._players.SingleOrDefault(player => player.Guid.Equals(guid));
+    }
+
+    /// <inheritdoc />
+    public DbSet<PlayerEntity> GetDbSet()
+    {
+        return this._players;
     }
 }
