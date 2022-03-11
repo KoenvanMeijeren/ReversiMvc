@@ -7,7 +7,7 @@ public class PlayersDatabaseRepository : RepositoryDatabaseBase<PlayerEntity>, I
 {
 
     private readonly DbSet<PlayerEntity> _players;
-    
+
     public PlayersDatabaseRepository(ReversiDbContext context) : base(context, context.Players)
     {
         this._players = context.Players;

@@ -1,10 +1,15 @@
-﻿global using Microsoft.EntityFrameworkCore;
-global using ReversiMvc.Data;
-global using ReversiMvc.Models;
-global using ReversiMvc.Models.Entities;
-global using ReversiMvc.Repository;
-global using ReversiMvc.Repository.Contracts;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
+global using Microsoft.EntityFrameworkCore;
+global 
+using ReversiMvc.Data;
+global 
+using ReversiMvc.Models;
+global 
+using ReversiMvc.Models.Entities;
+global 
+using ReversiMvc.Repository;
+global 
+using ReversiMvc.Repository.Contracts;
 
 var builder = WebApplication.CreateBuilder(args);
 

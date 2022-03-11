@@ -18,7 +18,7 @@ public class PlayerEntity : IEntity
     public int Losses { get; set; }
 
     public int Draws { get; set; }
-    
+
     /// <summary>
     /// Generates the token for the game.
     ///
@@ -34,5 +34,5 @@ public class PlayerEntity : IEntity
             .Replace("?", "q")
             .Replace("+", "p");
     }
-    
+
 }

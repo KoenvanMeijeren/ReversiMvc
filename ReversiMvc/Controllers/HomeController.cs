@@ -25,9 +25,9 @@ public class HomeController : Controller
         var currentUserGuid = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (currentUserGuid != null && user != null)
         {
-            this._repository.FirstOrCreate(new PlayerEntity {Guid = currentUserGuid, Name = user.Name});
+            this._repository.FirstOrCreate(new PlayerEntity { Guid = currentUserGuid, Name = user.Name });
         }
-        
+
         return this.View();
     }
 

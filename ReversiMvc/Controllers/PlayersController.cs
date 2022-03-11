@@ -1,4 +1,4 @@
-#nullable disable
+﻿#nullable disable
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -106,7 +106,7 @@ public class PlayersController : Controller
 
             throw;
         }
-        
+
         return this.RedirectToAction(nameof(this.Index));
     }
 

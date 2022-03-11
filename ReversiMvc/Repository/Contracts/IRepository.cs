@@ -16,7 +16,7 @@ public interface IRepository<T> where T : class
     /// </summary>
     /// <param name="entity">The entity.</param>
     Task<int> AddAsync(T entity);
-    
+
     /// <summary>
     /// Returns all entities of the repository.
     /// </summary>
@@ -42,14 +42,14 @@ public interface IRepository<T> where T : class
     /// <param name="entity">The entity.</param>
     /// <returns>Whether the update was successful or not.</returns>
     Task<int> UpdateAsync(T entity);
-    
+
     /// <summary>
     /// Deletes the entity.
     /// </summary>
     /// <param name="entity">The entity.</param>
     /// <returns>Whether the delete was successful or not.</returns>
     bool Delete(T entity);
-    
+
     /// <summary>
     /// Deletes the entity.
     /// </summary>

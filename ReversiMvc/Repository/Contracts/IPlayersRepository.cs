@@ -32,5 +32,5 @@ public interface IPlayersRepository : IRepository<PlayerEntity>
     /// </summary>
     /// <returns>The database set.</returns>
     DbSet<PlayerEntity> GetDbSet();
-    
+
 }

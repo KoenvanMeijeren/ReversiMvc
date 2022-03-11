@@ -23,7 +23,7 @@ public abstract class RepositoryDatabaseBase<T> : IRepository<T> where T : class
     public async Task<int> AddAsync(T entity)
     {
         this.Context.Add(entity);
-     
+
         return await this.Context.SaveChangesAsync();
     }
 
