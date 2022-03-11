@@ -26,10 +26,10 @@ public class PlayerEntity : IEntity
         {
             this.Guid = PlayerEntity.GenerateToken();
         }
-        
+
         this.Name = name;
     }
-    
+
     /// <summary>
     /// Generates the token for the game.
     ///
