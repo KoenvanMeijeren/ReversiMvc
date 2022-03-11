@@ -35,9 +35,9 @@ public class PlayersDatabaseRepositoryTests
         context.Database.EnsureCreated();
 
         context.Players.AddRange(
-            new PlayerEntity {Guid = "abcdef", Name = "Teddy", Draws = 1},
-            new PlayerEntity {Guid = "uiop", Name = "John", Victories = 2},
-            new PlayerEntity {Guid = "test", Name = "Jessica", Losses = 2}
+            new PlayerEntity { Guid = "abcdef", Name = "Teddy", Draws = 1 },
+            new PlayerEntity { Guid = "uiop", Name = "John", Victories = 2 },
+            new PlayerEntity { Guid = "test", Name = "Jessica", Losses = 2 }
         );
         context.SaveChanges();
 
@@ -91,7 +91,7 @@ public class PlayersDatabaseRepositoryTests
 
         // Act
         var result = this._repository.Update(player);
-        
+
         // Assert
         Assert.IsTrue(result);
     }
@@ -101,16 +101,16 @@ public class PlayersDatabaseRepositoryTests
     {
         // Arrange
         var player = this._repository.Get("qwerty");
-        
+
         // Act
         var result = this._repository.Delete(player);
-        
+
         // Assert
         Assert.IsTrue(result);
         Assert.AreEqual(3, this._repository.All().Count());
         Assert.IsNull(this._repository.Get("qwerty"));
     }
-    
+
     [Test]
     public void Exists_True()
     {
@@ -136,7 +136,7 @@ public class PlayersDatabaseRepositoryTests
         Assert.IsFalse(this._repository.Exists("vczdas"));
         Assert.IsFalse(this._repository.Exists(null));
     }
-    
+
     [Test]
     public void GetDbSet()
     {

@@ -13,20 +13,20 @@ public class ErrorViewModelTests
     {
         // Arrange
         var model = new ErrorViewModel { RequestId = "test" };
-        
+
         // Act
 
         // Assert
         Assert.AreEqual("test", model.RequestId);
         Assert.IsTrue(model.ShowRequestId);
     }
-    
+
     [Test]
     public void Create_Empty()
     {
         // Arrange
         var model = new ErrorViewModel();
-        
+
         // Act
 
         // Assert

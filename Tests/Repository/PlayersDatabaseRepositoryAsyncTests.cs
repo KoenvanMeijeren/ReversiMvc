@@ -36,9 +36,9 @@ public class PlayersDatabaseRepositoryAsyncTests
         context.Database.EnsureCreated();
 
         context.Players.AddRange(
-            new PlayerEntity {Guid = "abcdef", Name = "Teddy", Draws = 1},
-            new PlayerEntity {Guid = "uiop", Name = "John", Victories = 2},
-            new PlayerEntity {Guid = "test", Name = "Jessica", Losses = 2}
+            new PlayerEntity { Guid = "abcdef", Name = "Teddy", Draws = 1 },
+            new PlayerEntity { Guid = "uiop", Name = "John", Victories = 2 },
+            new PlayerEntity { Guid = "test", Name = "Jessica", Losses = 2 }
         );
         context.SaveChanges();
 
@@ -82,7 +82,7 @@ public class PlayersDatabaseRepositoryAsyncTests
         var result = await this._repository.UpdateAsync(player);
 
         // Assert
-        
+
         return result;
     }
 
@@ -91,10 +91,10 @@ public class PlayersDatabaseRepositoryAsyncTests
     {
         // Arrange
         var player = this._repository.Get("qwerty");
-        
+
         // Act
         var result = await this._repository.DeleteAsync(player);
-        
+
         // Assert
         Assert.AreEqual(3, this._repository.All().Count());
         Assert.IsNull(this._repository.Get("qwerty"));

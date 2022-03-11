@@ -31,7 +31,11 @@ public class PlayerEntityTests
         // Arrange
         var player = new PlayerEntity
         {
-            Guid = "test", Name = "Teddy", Draws = 1, Losses = 2, Victories = 10
+            Guid = "test",
+            Name = "Teddy",
+            Draws = 1,
+            Losses = 2,
+            Victories = 10
         };
 
         // Act
