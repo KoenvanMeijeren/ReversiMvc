@@ -20,6 +20,7 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
+        // Todo: find out how to do this when a sign in event occurs.
         var user = this.User.Identity;
         var currentUserGuid = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (currentUserGuid != null && user != null)
