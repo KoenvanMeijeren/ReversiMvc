@@ -1,0 +1,37 @@
+@model IEnumerable<ReversiMvc.Models.Entities.PlayerEntity>
+
+@{
+    ViewData["Title"] = "Spelers";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>
+    <a asp-action="Create">Speler toevoegen</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Naam</th>
+            <th>Aantal overwinningen</th>
+            <th>Aantal verliezen</th>
+            <th>Aantal gelijkspellen</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>@Html.DisplayFor(modelItem => item.Name)</td>
+            <td>@Html.DisplayFor(modelItem => item.Victories)</td>
+            <td>@Html.DisplayFor(modelItem => item.Losses)</td>
+            <td>@Html.DisplayFor(modelItem => item.Draws)</td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Guid">Bewerken</a> |
+                <a asp-action="Details" asp-route-id="@item.Guid">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Guid">Verwijderen</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
