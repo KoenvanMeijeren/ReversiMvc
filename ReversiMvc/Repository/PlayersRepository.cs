@@ -3,12 +3,12 @@
 /// <summary>
 /// Provides a repository for the game.
 /// </summary>
-public class PlayersDatabaseRepository : RepositoryDatabaseBase<PlayerEntity>, IPlayersRepository
+public class PlayersRepository : RepositoryDatabaseBase<PlayerEntity>, IPlayersRepository
 {
 
     private readonly DbSet<PlayerEntity> _players;
 
-    public PlayersDatabaseRepository(ReversiDbContext context) : base(context, context.Players)
+    public PlayersRepository(ReversiDbContext context) : base(context, context.Players)
     {
         this._players = context.Players;
     }

@@ -19,6 +19,17 @@ public class PlayerEntity : IEntity
 
     public int Draws { get; set; }
 
+    public PlayerEntity(string guid = "", string name = "")
+    {
+        this.Guid = guid;
+        if (string.IsNullOrEmpty(guid))
+        {
+            this.Guid = PlayerEntity.GenerateToken();
+        }
+        
+        this.Name = name;
+    }
+    
     /// <summary>
     /// Generates the token for the game.
     ///

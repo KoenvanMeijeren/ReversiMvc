@@ -21,7 +21,7 @@ builder.Services
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddScoped<IPlayersRepository, PlayersDatabaseRepository>();
+builder.Services.AddScoped<IPlayersRepository, PlayersRepository>();
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 var app = builder.Build();
