@@ -1,6 +1,6 @@
 ﻿namespace ReversiMvc.Repository;
 
-public abstract class RepositoryDatabaseBase<T> : IRepository<T> where T : class, IEntity
+public abstract class RepositoryDatabaseBase<T> : IRepository<T>, IAsyncRepository<T> where T : class, IEntity
 {
     protected readonly DbContext Context;
 
@@ -34,9 +34,9 @@ public abstract class RepositoryDatabaseBase<T> : IRepository<T> where T : class
     }
 
     /// <inheritdoc />
-    public Task<List<T>> AllAsync()
+    public async Task<List<T>> AllAsync()
     {
-        return this.DbSet.ToListAsync();
+        return await this.DbSet.ToListAsync();
     }
 
     /// <inheritdoc />

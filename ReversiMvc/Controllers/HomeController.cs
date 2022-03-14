@@ -2,30 +2,30 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using System.Security.Claims;
+using ReversiMvc.Services.Contracts;
 
 namespace ReversiMvc.Controllers;
 
 [Authorize]
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
-    private readonly IPlayersRepository _repository;
+    private readonly ICurrentPlayerService _currentPlayerService;
+    private readonly IGameRepository _gameRepository;
 
-    public HomeController(ILogger<HomeController> logger, IPlayersRepository repository)
+    public HomeController(ILogger<HomeController> logger, ICurrentPlayerService currentPlayerService, IGameRepository gameRepository)
     {
-        this._logger = logger;
-        this._repository = repository;
+        this._currentPlayerService = currentPlayerService;
+        this._gameRepository = gameRepository;
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
         // Todo: find out how to do this when a sign in event occurs.
-        var user = this.User.Identity;
-        var currentUserGuid = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        if (currentUserGuid != null && user != null)
+        var currentPlayer = this._currentPlayerService.Get();
+        var entity = await this._gameRepository.GetByPlayerToken(currentPlayer.Guid);
+        if (entity != null)
         {
-            this._repository.FirstOrCreate(new PlayerEntity { Guid = currentUserGuid, Name = user.Name });
+            return this.RedirectToAction("Details", "Game", new { token = entity.Token });
         }
 
         return this.View();

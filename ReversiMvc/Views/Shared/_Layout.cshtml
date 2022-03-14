@@ -21,12 +21,9 @@
                 @if (User.Identity is {IsAuthenticated: true })
                 {
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Player" asp-action="Index">Spelers</a>
-                        </li>
+                        <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Player" asp-action="Index">Spelers</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Game" asp-action="Index">Spellen</a></li>
                     </ul>
                 }
 

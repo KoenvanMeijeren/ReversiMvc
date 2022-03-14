@@ -1,0 +1,42 @@
+@model IEnumerable<ReversiMvc.Models.DataTransferObject.GameJsonDto>?
+
+@{
+    ViewData["Title"] = "Spellen";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>
+    <a asp-action="Create">Spel toevoegen</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Beschrijving</th>
+            <th>Sleutel</th>
+            <th>Speler 1</th>
+            <th>Speler 2</th>
+            <th>Huidige speler</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    @if (Model != null && Model.Any())
+    {
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                <td>@Html.DisplayFor(modelItem => item.Token)</td>
+                <td>@Html.DisplayFor(modelItem => item.PlayerOne.Name)</td>
+                <td>@Html.DisplayFor(modelItem => item.PlayerTwo.Name)</td>
+                <td>@Html.DisplayFor(modelItem => item.CurrentPlayer.Name)</td>
+                <td>@Html.DisplayFor(modelItem => item.Status)</td>
+
+                <td><a href="@Url.Action("Details", new {token = item.Token})">Details</a></td>
+            </tr>
+        }
+    }
+    </tbody>
+</table>
