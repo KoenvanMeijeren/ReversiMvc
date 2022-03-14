@@ -21,7 +21,7 @@ public interface IGameRepository : IAsyncRepository<GameJsonDto>
     /// <param name="playerGuid">The guid of the player.</param>
     /// <param name="playerName">The name of the player.</param>
     Task<GameJsonDto?> AddPlayerOneAsync(string token, string playerGuid, string playerName);
-    
+
     /// <summary>
     /// Adds a player entity to the game.
     /// </summary>
@@ -29,7 +29,7 @@ public interface IGameRepository : IAsyncRepository<GameJsonDto>
     /// <param name="playerGuid">The guid of the player.</param>
     /// <param name="playerName">The name of the player.</param>
     Task<GameJsonDto?> AddPlayerTwoAsync(string token, string playerGuid, string playerName);
-    
+
     /// <summary>
     /// Determines if the game exists.
     /// </summary>
@@ -43,7 +43,7 @@ public interface IGameRepository : IAsyncRepository<GameJsonDto>
     /// <param name="token">The unique token of the game.</param>
     /// <returns>The game.</returns>
     Task<GameJsonDto?> Get(string? token);
-    
+
     /// <summary>
     /// Gets the game by the token of the player.
     /// </summary>

@@ -24,7 +24,7 @@ public class CurrentPlayerService : ICurrentPlayerService
         {
             return this._currentPlayer;
         }
-        
+
         // Todo: find out how to do this when a sign in event occurs.
         this.Set();
 
@@ -44,5 +44,5 @@ public class CurrentPlayerService : ICurrentPlayerService
 
         this._currentPlayer = this._playersRepository.Get(currentUserGuid)!;
     }
-    
+
 }

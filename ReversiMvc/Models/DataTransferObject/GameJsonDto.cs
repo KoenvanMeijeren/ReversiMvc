@@ -32,7 +32,7 @@ public class GameJsonDto : IEntity
     public PlayerJsonDto? CurrentPlayer { get; set; }
 
     public string? Board { get; set; }
-    
+
     public string? Status { get; set; }
 
 }

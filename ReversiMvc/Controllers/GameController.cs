@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ReversiMvc.Models.DataTransferObject;
 using ReversiMvc.Services.Contracts;
 
@@ -15,7 +15,7 @@ public class GameController : Controller
         this._repository = repository;
         this._currentPlayer = currentPlayerService.Get();
     }
-        
+
     // GET: Game
     [HttpGet]
     public async Task<IActionResult> Index()
@@ -25,7 +25,7 @@ public class GameController : Controller
         {
             return this.View("InvalidActionMessage", new InvalidActionViewModel { Message = "Je bent al gekoppeld aan een spel!" });
         }
-        
+
         return this.View(await this._repository.AllAsync());
     }
 
@@ -38,7 +38,7 @@ public class GameController : Controller
         {
             return this.NotFound();
         }
-        
+
         var entity = await this._repository.GetByPlayerToken(this._currentPlayer.Guid);
         if (entity != null && !entity.Token.Equals(gameEntity.Token))
         {
@@ -57,7 +57,7 @@ public class GameController : Controller
         {
             return this.View("InvalidActionMessage", new InvalidActionViewModel { Message = "Je bent al gekoppeld aan een spel!" });
         }
-        
+
         return this.View();
     }
 
@@ -73,7 +73,7 @@ public class GameController : Controller
         {
             return this.View("InvalidActionMessage", new InvalidActionViewModel { Message = "Je bent al gekoppeld aan een spel!" });
         }
-        
+
         if (!this.ModelState.IsValid)
         {
             return this.View(gameJsonDto);
@@ -84,5 +84,5 @@ public class GameController : Controller
 
         return this.RedirectToAction(nameof(this.Details));
     }
-        
+
 }
