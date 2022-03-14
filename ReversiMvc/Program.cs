@@ -5,6 +5,8 @@ global using ReversiMvc.Models.Entities;
 global using ReversiMvc.Repository;
 global using ReversiMvc.Repository.Contracts;
 using Microsoft.AspNetCore.Identity;
+using ReversiMvc.Services;
+using ReversiMvc.Services.Contracts;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,7 +23,11 @@ builder.Services
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
+builder.Services.AddScoped<IGameRepository, GameRepository>();
 builder.Services.AddScoped<IPlayersRepository, PlayersRepository>();
+builder.Services.AddScoped<ICurrentPlayerService, CurrentPlayerService>();
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 var app = builder.Build();

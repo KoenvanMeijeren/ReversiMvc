@@ -5,11 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 namespace ReversiMvc.Controllers;
 
 [Authorize]
-public class PlayersController : Controller
+public class PlayerController : Controller
 {
     private readonly IPlayersRepository _repository;
 
-    public PlayersController(IPlayersRepository repository)
+    public PlayerController(IPlayersRepository repository)
     {
         this._repository = repository;
     }

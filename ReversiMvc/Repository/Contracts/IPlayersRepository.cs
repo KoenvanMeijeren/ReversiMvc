@@ -3,7 +3,7 @@
 /// <summary>
 /// Provides an interface for games repository.
 /// </summary>
-public interface IPlayersRepository : IRepository<PlayerEntity>
+public interface IPlayersRepository : IRepository<PlayerEntity>, IAsyncRepository<PlayerEntity>
 {
 
     /// <summary>
