@@ -1,0 +1,42 @@
+﻿@page
+@model LoginWith2faModel
+@{
+    ViewData["Title"] = "2-factor authenticatie";
+}
+
+<div class="row">
+    <div class="col-md-6 m-auto">
+        <form method="post" asp-route-returnUrl="@Model.ReturnUrl">
+            <h1>@ViewData["Title"]</h1>
+            <hr />
+            <p>Uw login is nu beschermd met een authenticator-app. Voer uw authenticator code hier beneden in.</p>
+            
+            <input asp-for="RememberMe" type="hidden"/>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-floating">
+                <input asp-for="Input.TwoFactorCode" class="form-control" autocomplete="off"/>
+                <label asp-for="Input.TwoFactorCode" class="form-label">Authenticator code</label>
+                <span asp-validation-for="Input.TwoFactorCode" class="text-danger"></span>
+            </div>
+            <div>
+                <div class="checkbox">
+                    <label asp-for="Input.RememberMachine" class="form-label">
+                        <input asp-for="Input.RememberMachine"/>
+                        @Html.DisplayNameFor(m => m.Input.RememberMachine)
+                    </label>
+                </div>
+            </div>
+            <div>
+                <button type="submit" class="w-100 btn btn-lg btn-primary">Inloggen</button>
+            </div>
+        </form>
+    </div>
+</div>
+<p>
+    Geen toegang tot uw authenticator-app? U kan
+    <a id="recovery-code-login" asp-page="./LoginWithRecoveryCode" asp-route-returnUrl="@Model.ReturnUrl">inloggen met een herstelcode</a>.
+</p>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

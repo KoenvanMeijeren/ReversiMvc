@@ -16,3 +16,11 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+form button[type="submit"] {
+    margin-top: 1rem;
+}
+
+.mw-50 {
+    max-width: 50%;
+}

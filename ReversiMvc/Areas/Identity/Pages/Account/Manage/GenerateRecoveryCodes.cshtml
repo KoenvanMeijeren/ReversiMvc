@@ -1,0 +1,27 @@
+﻿@page
+@model GenerateRecoveryCodesModel
+@{
+    ViewData["Title"] = "Genereer 2-factor authenticatie (2FA) herstelcodes";
+    ViewData["ActivePage"] = ManageNavPages.TwoFactorAuthentication;
+}
+
+<partial name="_StatusMessage" for="StatusMessage" />
+<h3>@ViewData["Title"]</h3>
+<div class="alert alert-warning" role="alert">
+    <p>
+        <span class="glyphicon glyphicon-warning-sign"></span>
+        <strong>Bewaar deze codes op een veilige plek.</strong>
+    </p>
+    <p>
+        Als u uw apparaat verliest en geen toegang hebt tot uw herstelcodes verliest u uw toegang tot dit account.
+    </p>
+    <p>
+        Nieuwe herstelcodes genereren veranderd niet de sleutels in authenticator apps. Als u de sleutel in uw 
+        authenticator app wil veranderen moet u <a asp-page="./ResetAuthenticator">uw authenticator sleutels resetten.</a>
+    </p>
+</div>
+<div>
+    <form method="post">
+        <button class="btn btn-danger" type="submit">Genereer herstelcodes</button>
+    </form>
+</div>

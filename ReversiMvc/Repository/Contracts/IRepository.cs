@@ -1,6 +1,4 @@
-﻿using ReversiMvc.Models.DataTransferObject;
-
-namespace ReversiMvc.Repository.Contracts;
+﻿namespace ReversiMvc.Repository.Contracts;
 
 /// <summary>
 /// Provides an interface for games repository.
