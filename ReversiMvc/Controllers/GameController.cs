@@ -4,7 +4,6 @@ using ReversiMvc.Services.Contracts;
 
 namespace ReversiMvc.Controllers;
 
-[Route("[controller]")]
 public class GameController : Controller
 {
     private readonly IGameRepository _repository;
@@ -17,7 +16,6 @@ public class GameController : Controller
     }
 
     // GET: Game
-    [HttpGet]
     public async Task<IActionResult> Index()
     {
         var entity = await this._repository.GetByPlayerToken(this._currentPlayer.Guid);
@@ -30,7 +28,6 @@ public class GameController : Controller
     }
 
     // GET: Game/Create
-    [HttpGet("add")]
     public async Task<IActionResult> Create()
     {
         var entity = await this._repository.GetByPlayerToken(this._currentPlayer.Guid);
@@ -45,7 +42,7 @@ public class GameController : Controller
     // POST: Game/Create
     // To protect from overposting attacks, enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-    [HttpPost("add")]
+    [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create([Bind("Description")] GameJsonDto gameJsonDto)
     {
@@ -67,7 +64,6 @@ public class GameController : Controller
     }
     
     // GET: Game/{token}/details
-    [HttpGet("{token}/details")]
     public async Task<IActionResult> Details(string? token)
     {
         var gameEntity = await this._repository.Get(token);
@@ -82,15 +78,15 @@ public class GameController : Controller
             return this.View("InvalidActionMessage", new InvalidActionViewModel { Message = "Je bent al gekoppeld aan een spel!" });
         }
 
-        return this.View(new GameEditViewModel(entity));
+        return this.View(new GameEditViewModel(gameEntity));
     }
 
-    // PUT: Game/add/player-two
+    // POST: Game/add/player-two
     // To protect from overposting attacks, enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-    [HttpPut("add/player-two")]
+    [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> AddPlayerTwo(string token)
+    public async Task<IActionResult> AddPlayerTwo(string id)
     {
         var entity = await this._repository.GetByPlayerToken(this._currentPlayer.Guid);
         if (entity != null)
@@ -98,9 +94,9 @@ public class GameController : Controller
             return this.View("InvalidActionMessage", new InvalidActionViewModel { Message = "Je bent al gekoppeld aan een spel!" });
         }
 
-        await this._repository.AddPlayerTwoAsync(token, this._currentPlayer.Guid, this._currentPlayer.Name);
+        await this._repository.AddPlayerTwoAsync(id, this._currentPlayer.Guid, this._currentPlayer.Name);
 
-        return this.RedirectToAction(nameof(this.Details));
+        return this.RedirectToAction(nameof(this.Details), new { token = id });
     }
     
 }

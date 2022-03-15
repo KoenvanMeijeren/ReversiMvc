@@ -13,9 +13,9 @@ public class GameEditViewModel
     public int? Id => this._gameJsonDto?.Id;
     public string? Description => this._gameJsonDto?.Description;
     public string? Token => this._gameJsonDto?.Token;
-    public PlayerDto? PlayerOne => new PlayerDto(this._gameJsonDto?.PlayerOne);
-    public PlayerDto? PlayerTwo => new PlayerDto(this._gameJsonDto?.PlayerTwo);
-    public PlayerDto? CurrentPlayer => new PlayerDto(this._gameJsonDto?.CurrentPlayer);
+    public PlayerDto PlayerOne => new PlayerDto(this._gameJsonDto?.PlayerOne);
+    public PlayerDto PlayerTwo => new PlayerDto(this._gameJsonDto?.PlayerTwo);
+    public PlayerDto CurrentPlayer => new PlayerDto(this._gameJsonDto?.CurrentPlayer);
 
     public Color[,] Board
     {
@@ -23,7 +23,7 @@ public class GameEditViewModel
         {
             if (this._gameJsonDto?.Board == null)
             {
-                throw new InvalidDataException("The board data is always required in order to edit a game.");
+                return new Color[1,1];
             }
 
             return JsonConvert.DeserializeObject<Color[,]>(this._gameJsonDto.Board)!;
@@ -41,9 +41,34 @@ public class GameEditViewModel
         _ => Status.Created
     };
 
+    public GameEditViewModel() : this(null)
+    {
+        
+    }
+    
     public GameEditViewModel(GameJsonDto? gameJsonDto = null)
     {
         this._gameJsonDto = gameJsonDto;
     }
     
+    public bool CanAddPlayerOne()
+    {
+        return this.PlayerOne.Token == null;
+    }
+    
+    public bool CanAddPlayerTwo()
+    {
+        return this.PlayerTwo.Token == null;
+    }
+
+    public bool CanStart()
+    {
+        return this.Status.Equals(Status.Pending);
+    }
+
+    public bool CanQuit()
+    {
+        return this.Status.Equals(Status.Playing);
+    }
+
 }
