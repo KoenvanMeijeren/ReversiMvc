@@ -12,40 +12,39 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 
-namespace ReversiMvc.Areas.Identity.Pages.Account
+namespace ReversiMvc.Areas.Identity.Pages.Account;
+
+public class ConfirmEmailModel : PageModel
 {
-    public class ConfirmEmailModel : PageModel
+    private readonly UserManager<IdentityUser> _userManager;
+
+    public ConfirmEmailModel(UserManager<IdentityUser> userManager)
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        this._userManager = userManager;
+    }
 
-        public ConfirmEmailModel(UserManager<IdentityUser> userManager)
+    /// <summary>
+    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
+    ///     directly from your code. This API may change or be removed in future releases.
+    /// </summary>
+    [TempData]
+    public string StatusMessage { get; set; }
+    public async Task<IActionResult> OnGetAsync(string userId, string code)
+    {
+        if (userId == null || code == null)
         {
-            this._userManager = userManager;
+            return this.RedirectToPage("/Index");
         }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
-        [TempData]
-        public string StatusMessage { get; set; }
-        public async Task<IActionResult> OnGetAsync(string userId, string code)
+        var user = await this._userManager.FindByIdAsync(userId);
+        if (user == null)
         {
-            if (userId == null || code == null)
-            {
-                return this.RedirectToPage("/Index");
-            }
-
-            var user = await this._userManager.FindByIdAsync(userId);
-            if (user == null)
-            {
-                return this.NotFound($"Unable to load user with ID '{userId}'.");
-            }
-
-            code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
-            var result = await this._userManager.ConfirmEmailAsync(user, code);
-            this.StatusMessage = result.Succeeded ? "Bedankt voor het bevestigen van uw email." : "Fout tijdens uw email bevestigen.";
-            return this.Page();
+            return this.NotFound($"Unable to load user with ID '{userId}'.");
         }
+
+        code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
+        var result = await this._userManager.ConfirmEmailAsync(user, code);
+        this.StatusMessage = result.Succeeded ? "Bedankt voor het bevestigen van uw email." : "Fout tijdens uw email bevestigen.";
+        return this.Page();
     }
 }
