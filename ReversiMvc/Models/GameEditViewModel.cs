@@ -31,14 +31,14 @@ public class GameEditViewModel
         }
     }
 
-    public Status Status => this._gameJsonDto?.Status switch
+    public Status Status => this._gameJsonDto?.Status?.ToLower() switch
     {
-        "Created" => Status.Created,
-        "Queued" => Status.Queued,
-        "Pending" => Status.Pending,
-        "Playing" => Status.Playing,
-        "Finished" => Status.Finished,
-        "Quit" => Status.Quit,
+        "created" => Status.Created,
+        "queued" => Status.Queued,
+        "pending" => Status.Pending,
+        "playing" => Status.Playing,
+        "finished" => Status.Finished,
+        "quit" => Status.Quit,
         _ => Status.Created
     };
 
@@ -75,6 +75,11 @@ public class GameEditViewModel
 
     public bool CanStart()
     {
+        if (this.PlayerOne.Token == null || this.PlayerTwo.Token == null)
+        {
+            return false;
+        }
+
         return this.Status.Equals(Status.Pending)
                && this._currentPlayer is { Guid: { } }
                && this._currentPlayer.Guid.Equals(this.PlayerOne.Token);
