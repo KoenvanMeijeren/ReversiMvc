@@ -67,12 +67,32 @@ public class GameRepository : IGameRepository
 
         return !response.IsSuccessStatusCode ? null : response.Content.ReadFromJsonAsync<GameJsonDto>().Result;
     }
+    
+    /// <inheritdoc />
+    public async Task<GameJsonDto?> StartAsync(string token)
+    {
+        var client = GameRepository.CreateHttpClient($"{GameRepository.ApiUri}/{token}/start", "text/plain");
+        var request = new HttpRequestMessage(HttpMethod.Put, client.BaseAddress);
+        var response = await client.SendAsync(request);
+
+        return !response.IsSuccessStatusCode ? null : response.Content.ReadFromJsonAsync<GameJsonDto>().Result;
+    }
+    
+    /// <inheritdoc />
+    public async Task<GameJsonDto?> QuitAsync(string token)
+    {
+        var client = GameRepository.CreateHttpClient($"{GameRepository.ApiUri}/{token}/quit", "text/plain");
+        var request = new HttpRequestMessage(HttpMethod.Put, client.BaseAddress);
+        var response = await client.SendAsync(request);
+
+        return !response.IsSuccessStatusCode ? null : response.Content.ReadFromJsonAsync<GameJsonDto>().Result;
+    }
 
     /// <inheritdoc />
     public async Task<List<GameJsonDto>?> AllAsync()
     {
-        var client = GameRepository.CreateHttpClient($"{GameRepository.ApiUri}/queue");
-        var response = await client.GetAsync($"{GameRepository.ApiUri}/queue");
+        var client = GameRepository.CreateHttpClient($"{GameRepository.ApiUri}/all/all");
+        var response = await client.GetAsync($"{GameRepository.ApiUri}/all/all");
 
         return !response.IsSuccessStatusCode ? null : response.Content.ReadFromJsonAsync<List<GameJsonDto>>().Result;
     }
@@ -106,18 +126,28 @@ public class GameRepository : IGameRepository
         var client = GameRepository.CreateHttpClient($"{GameRepository.ApiUri}/{token}");
         var response = await client.GetAsync($"{GameRepository.ApiUri}/{token}");
 
-        return response.Content.ReadFromJsonAsync<GameJsonDto>().Result;
+        return !response.IsSuccessStatusCode ? null : response.Content.ReadFromJsonAsync<GameJsonDto>().Result;
     }
 
     /// <inheritdoc />
     public async Task<GameJsonDto?> GetByPlayerToken(string? token)
     {
-        var entities = await this.AllAsync();
+        if (token == null)
+        {
+            return null;
+        }
 
-        return entities?.SingleOrDefault(
-            game => (game.PlayerOne is { Token: { } } && game.PlayerOne.Token.Equals(token))
-                 || (game.PlayerTwo is { Token: { } } && game.PlayerTwo.Token.Equals(token))
-        );
+        var client = GameRepository.CreateHttpClient($"{GameRepository.ApiUri}/player-one/{token}/active");
+        var response = await client.GetAsync($"{GameRepository.ApiUri}/player-one/{token}/active");
+        if (response.IsSuccessStatusCode)
+        {
+            return response.Content.ReadFromJsonAsync<GameJsonDto>().Result;
+        }
+        
+        client = GameRepository.CreateHttpClient($"{GameRepository.ApiUri}/player-two/{token}/active");
+        response = await client.GetAsync($"{GameRepository.ApiUri}/player-two/{token}/active");
+
+        return !response.IsSuccessStatusCode ? null : response.Content.ReadFromJsonAsync<GameJsonDto>().Result;
     }
 
     private static HttpClient CreateHttpClient(string uri, string accept = "application/json")

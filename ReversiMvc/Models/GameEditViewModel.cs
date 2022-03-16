@@ -9,6 +9,7 @@ public class GameEditViewModel
 {
 
     private readonly GameJsonDto? _gameJsonDto;
+    private readonly PlayerEntity? _currentPlayer;
     
     public int? Id => this._gameJsonDto?.Id;
     public string? Description => this._gameJsonDto?.Description;
@@ -41,34 +42,54 @@ public class GameEditViewModel
         _ => Status.Created
     };
 
-    public GameEditViewModel() : this(null)
+    public GameEditViewModel()
     {
         
     }
     
-    public GameEditViewModel(GameJsonDto? gameJsonDto = null)
+    public GameEditViewModel(GameJsonDto? gameJsonDto = null, PlayerEntity currentPlayer = null)
     {
         this._gameJsonDto = gameJsonDto;
+        this._currentPlayer = currentPlayer;
     }
     
     public bool CanAddPlayerOne()
     {
-        return this.PlayerOne.Token == null;
+        if (this._currentPlayer is not {Guid: { }})
+        {
+            return false;
+        }
+        
+        return this.PlayerOne.Token == null && !this._currentPlayer.Guid.Equals(this.PlayerTwo.Token);
     }
     
     public bool CanAddPlayerTwo()
     {
-        return this.PlayerTwo.Token == null;
+        if (this._currentPlayer is not {Guid: { }})
+        {
+            return false;
+        }
+        
+        return this.PlayerTwo.Token == null && !this._currentPlayer.Guid.Equals(this.PlayerOne.Token);
     }
 
     public bool CanStart()
     {
-        return this.Status.Equals(Status.Pending);
+        return this.Status.Equals(Status.Pending) 
+               && this._currentPlayer is {Guid: { }} 
+               && this._currentPlayer.Guid.Equals(this.PlayerOne.Token);
     }
 
     public bool CanQuit()
     {
-        return this.Status.Equals(Status.Playing);
+        if (this._currentPlayer is not {Guid: { }})
+        {
+            return false;
+        }
+        
+        return this.Status.Equals(Status.Playing) 
+               && (this._currentPlayer.Guid.Equals(this.PlayerOne.Token) 
+                   || this._currentPlayer.Guid.Equals(this.PlayerTwo.Token));
     }
 
 }

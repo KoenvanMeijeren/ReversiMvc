@@ -1,4 +1,4 @@
-@model IEnumerable<ReversiMvc.Models.DataTransferObject.GameJsonDto>?
+@model IEnumerable<GameEditViewModel>?
 
 @{
     ViewData["Title"] = "Spellen";
@@ -13,7 +13,6 @@
     <thead>
         <tr>
             <th>Beschrijving</th>
-            <th>Sleutel</th>
             <th>Speler 1</th>
             <th>Speler 2</th>
             <th>Huidige speler</th>
@@ -28,13 +27,30 @@
         {
             <tr>
                 <td>@Html.DisplayFor(modelItem => item.Description)</td>
-                <td>@Html.DisplayFor(modelItem => item.Token)</td>
                 <td>@Html.DisplayFor(modelItem => item.PlayerOne.Name)</td>
                 <td>@Html.DisplayFor(modelItem => item.PlayerTwo.Name)</td>
                 <td>@Html.DisplayFor(modelItem => item.CurrentPlayer.Name)</td>
                 <td>@Html.DisplayFor(modelItem => item.Status)</td>
 
-                <td><a href="@Url.Action("Details", new {token = item.Token})">Details</a></td>
+                <td>
+                    <a href="@Url.Action("Details", new {token = item.Token})">Details</a>
+                    
+                    @if (item.CanAddPlayerTwo())
+                    {
+                        <a href="@Url.Action("AddPlayerTwo", new { token = item.Token })">Deelnemen</a>
+                    }
+                    
+                    @if (item.CanStart())
+                    {
+                        <a href="@Url.Action("Start", new { token = item.Token })">Starten</a>
+                    }
+                    
+                    @if (item.CanQuit())
+                    {
+                        <a href="@Url.Action("Quit", new { token = item.Token })">Stoppen</a>
+                    }
+                </td>
+                
             </tr>
         }
     }

@@ -30,24 +30,17 @@
         <div class="col-md-6">
             @if (Model.CanAddPlayerTwo())
             {
-                <form asp-action="AddPlayerTwo">
-                    <input type="hidden" asp-for="Token"/>
-                    
-                    <div class="form-group mt-3">
-                        <input type="submit" value="Deelnemen" class="btn btn-primary"/>
-                    </div>
-                </form>
+                <a href="@Url.Action("AddPlayerTwo", new { token = Model.Token })" class="btn btn-primary">Deelnemen</a>
             }
             
             @if (Model.CanStart())
             {
-                <form asp-action="AddPlayerTwo">
-                    <input type="hidden" asp-for="Token"/>
-                    
-                    <div class="form-group mt-3">
-                        <input type="submit" value="Start" class="btn btn-primary"/>
-                    </div>
-                </form>
+                <a href="@Url.Action("Start", new { token = Model.Token })" class="btn btn-primary">Starten</a>
+            }
+            
+            @if (Model.CanQuit())
+            {
+                <a href="@Url.Action("Quit", new { token = Model.Token })" class="btn btn-primary">Stoppen</a>
             }
         </div>
     </div>

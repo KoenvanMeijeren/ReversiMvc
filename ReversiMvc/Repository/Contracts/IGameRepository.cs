@@ -31,6 +31,18 @@ public interface IGameRepository : IAsyncRepository<GameJsonDto>
     Task<GameJsonDto?> AddPlayerTwoAsync(string token, string playerGuid, string playerName);
 
     /// <summary>
+    /// Starts the game.
+    /// </summary>
+    /// <param name="token">The token of the game.</param>
+    Task<GameJsonDto?> StartAsync(string token);
+    
+    /// <summary>
+    /// Quits the game.
+    /// </summary>
+    /// <param name="token">The token of the game.</param>
+    Task<GameJsonDto?> QuitAsync(string token);
+    
+    /// <summary>
     /// Determines if the game exists.
     /// </summary>
     /// <param name="token">The unique token of the game.</param>
