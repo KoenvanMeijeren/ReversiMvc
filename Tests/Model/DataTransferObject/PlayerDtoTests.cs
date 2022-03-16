@@ -13,7 +13,7 @@ public class PlayerDtoTests
     public void PlayerJson_NotEmpty()
     {
         // Arrange
-        var player = new PlayerJsonDto() {Color = "Black", Name = "Teddy", Token = "abcdef"};
+        var player = new PlayerJsonDto() { Color = "Black", Name = "Teddy", Token = "abcdef" };
         // Act
 
         // Assert
@@ -21,7 +21,7 @@ public class PlayerDtoTests
         Assert.AreEqual("Teddy", player.Name);
         Assert.AreEqual("abcdef", player.Token);
     }
-    
+
     [Test]
     public void PlayerJson_Empty()
     {
@@ -34,13 +34,13 @@ public class PlayerDtoTests
         Assert.IsNull(player.Name);
         Assert.IsNull(player.Token);
     }
-    
+
     [Test]
     public void Player_NotEmpty()
     {
         // Arrange
-        var player = new PlayerDto(new PlayerJsonDto() {Color = "Black", Name = "Teddy", Token = "abcdef"});
-        var player1 = new PlayerDto(new PlayerJsonDto() {Color = "White", Name = "Teddy", Token = "abcdef"});
+        var player = new PlayerDto(new PlayerJsonDto() { Color = "Black", Name = "Teddy", Token = "abcdef" });
+        var player1 = new PlayerDto(new PlayerJsonDto() { Color = "White", Name = "Teddy", Token = "abcdef" });
         // Act
 
         // Assert
@@ -49,7 +49,7 @@ public class PlayerDtoTests
         Assert.AreEqual("Teddy", player.Name);
         Assert.AreEqual("abcdef", player.Token);
     }
-    
+
     [Test]
     public void Player_Empty()
     {
@@ -58,9 +58,9 @@ public class PlayerDtoTests
         // Act
 
         // Assert
-        Assert.AreEqual(Color.None , player.Color);
+        Assert.AreEqual(Color.None, player.Color);
         Assert.IsNull(player.Name);
         Assert.IsNull(player.Token);
     }
-    
+
 }

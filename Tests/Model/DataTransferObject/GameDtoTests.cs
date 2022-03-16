@@ -19,9 +19,9 @@ public class GameDtoTests
             Description = "test",
             Board = "[[0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0],[0,0,0,1,2,0,0,0],[0,0,0,2,1,0,0,0],[0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0]]",
             Token = "abcdeff",
-            PlayerOne = new PlayerJsonDto() { Color = "White", Name = "Teddy", Token = "qwerty"},
-            PlayerTwo = new PlayerJsonDto() { Color = "Black", Name = "Jessica", Token = "zxcvb"},
-            CurrentPlayer = new PlayerJsonDto() { Color = "Black", Name = "Jessica", Token = "zxcvb"},
+            PlayerOne = new PlayerJsonDto() { Color = "White", Name = "Teddy", Token = "qwerty" },
+            PlayerTwo = new PlayerJsonDto() { Color = "Black", Name = "Jessica", Token = "zxcvb" },
+            CurrentPlayer = new PlayerJsonDto() { Color = "Black", Name = "Jessica", Token = "zxcvb" },
             Status = "playing"
         };
         // Act
@@ -35,7 +35,7 @@ public class GameDtoTests
         Assert.AreEqual("zxcvb", game.CurrentPlayer.Token);
         Assert.AreEqual("playing", game.Status);
     }
-    
+
     [Test]
     public void GameJson_Empty()
     {

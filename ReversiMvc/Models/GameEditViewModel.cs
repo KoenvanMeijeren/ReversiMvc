@@ -79,7 +79,7 @@ public class GameEditViewModel
         {
             return false;
         }
-        
+
         return this.Status.Equals(Status.Pending)
                && this._currentPlayer is { Guid: { } }
                && this._currentPlayer.Guid.Equals(this.PlayerOne.Token);
