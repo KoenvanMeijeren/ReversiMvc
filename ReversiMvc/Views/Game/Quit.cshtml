@@ -1,0 +1,27 @@
+@model ReversiMvc.Models.GameEditViewModel
+
+@{
+    ViewData["Title"] = "Spel stoppen";
+}
+
+<h1>Weet je zeker dat je dit spel wilt stoppen?</h1>
+<div>
+    <h4>Spel</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">Beschrijving</dt>
+        <dd class = "col-sm-10">@Model.Description</dd>
+    </dl>
+    
+    <div class="row">
+        <div class="col-md-6">
+            <form asp-action="Quit">
+                <input type="hidden" asp-for="Token"/>
+                
+                <div class="form-group mt-3">
+                    <input type="submit" value="Stoppen" class="btn btn-primary"/>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
