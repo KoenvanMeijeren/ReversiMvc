@@ -67,7 +67,7 @@ public class GameRepository : IGameRepository
 
         return !response.IsSuccessStatusCode ? null : response.Content.ReadFromJsonAsync<GameJsonDto>().Result;
     }
-    
+
     /// <inheritdoc />
     public async Task<GameJsonDto?> StartAsync(string token)
     {
@@ -77,7 +77,7 @@ public class GameRepository : IGameRepository
 
         return !response.IsSuccessStatusCode ? null : response.Content.ReadFromJsonAsync<GameJsonDto>().Result;
     }
-    
+
     /// <inheritdoc />
     public async Task<GameJsonDto?> QuitAsync(string token)
     {
@@ -143,7 +143,7 @@ public class GameRepository : IGameRepository
         {
             return response.Content.ReadFromJsonAsync<GameJsonDto>().Result;
         }
-        
+
         client = GameRepository.CreateHttpClient($"{GameRepository.ApiUri}/player-two/{token}/active");
         response = await client.GetAsync($"{GameRepository.ApiUri}/player-two/{token}/active");
 

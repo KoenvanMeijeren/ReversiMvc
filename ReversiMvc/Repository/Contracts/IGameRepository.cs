@@ -35,13 +35,13 @@ public interface IGameRepository : IAsyncRepository<GameJsonDto>
     /// </summary>
     /// <param name="token">The token of the game.</param>
     Task<GameJsonDto?> StartAsync(string token);
-    
+
     /// <summary>
     /// Quits the game.
     /// </summary>
     /// <param name="token">The token of the game.</param>
     Task<GameJsonDto?> QuitAsync(string token);
-    
+
     /// <summary>
     /// Determines if the game exists.
     /// </summary>

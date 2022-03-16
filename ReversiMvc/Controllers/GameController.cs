@@ -25,7 +25,7 @@ public class GameController : Controller
         }
 
         var entities = from game in await this._repository.AllAsync() select new GameEditViewModel(game, this._currentPlayer);
-        
+
         return this.View(entities);
     }
 
@@ -64,7 +64,7 @@ public class GameController : Controller
 
         return this.RedirectToAction(nameof(this.Details), new { token = game.Token });
     }
-    
+
     // GET: Game/{token}/details
     public async Task<IActionResult> Details(string? token)
     {
@@ -82,7 +82,7 @@ public class GameController : Controller
 
         return this.View(new GameEditViewModel(gameEntity, this._currentPlayer));
     }
-    
+
     public async Task<IActionResult> AddPlayerTwo(string? token)
     {
         var entity = await this._repository.GetByPlayerToken(this._currentPlayer.Guid);
@@ -96,7 +96,7 @@ public class GameController : Controller
         {
             return this.View("InvalidActionMessage", new InvalidActionViewModel { Message = "Het gekozen spel bestaat niet!" });
         }
-        
+
         return this.View(new GameEditViewModel(game, this._currentPlayer));
     }
 
@@ -123,7 +123,7 @@ public class GameController : Controller
 
         return this.RedirectToAction(nameof(this.Details), new { token });
     }
-    
+
     public async Task<IActionResult> Start(string? token)
     {
         var game = await this._repository.Get(token);
@@ -131,13 +131,13 @@ public class GameController : Controller
         {
             return this.View("InvalidActionMessage", new InvalidActionViewModel { Message = "Het gekozen spel bestaat niet!" });
         }
-        
+
         var viewModel = new GameEditViewModel(game, this._currentPlayer);
         if (!viewModel.CanStart())
         {
             return this.View("InvalidActionMessage", new InvalidActionViewModel { Message = "Alleen speler 1 kan het spel starten!" });
         }
-        
+
         return this.View(new GameEditViewModel(game, this._currentPlayer));
     }
 
@@ -164,7 +164,7 @@ public class GameController : Controller
 
         return this.RedirectToAction(nameof(this.Details), new { token });
     }
-    
+
     public async Task<IActionResult> Quit(string? token)
     {
         var game = await this._repository.Get(token);
@@ -172,13 +172,13 @@ public class GameController : Controller
         {
             return this.View("InvalidActionMessage", new InvalidActionViewModel { Message = "Het gekozen spel bestaat niet!" });
         }
-        
+
         var viewModel = new GameEditViewModel(game, this._currentPlayer);
         if (!viewModel.CanQuit())
         {
             return this.View("InvalidActionMessage", new InvalidActionViewModel { Message = "Je kan alleen het spel stoppen waar jij aan gekoppeld bent!" });
         }
-        
+
         return this.View(new GameEditViewModel(game, this._currentPlayer));
     }
 
@@ -194,7 +194,7 @@ public class GameController : Controller
         {
             return this.View("InvalidActionMessage", new InvalidActionViewModel { Message = "Het gekozen spel bestaat niet!" });
         }
-        
+
         var viewModel = new GameEditViewModel(game, this._currentPlayer);
         if (!viewModel.CanQuit())
         {
@@ -205,5 +205,5 @@ public class GameController : Controller
 
         return this.RedirectToAction(nameof(this.Details), new { token });
     }
-    
+
 }
