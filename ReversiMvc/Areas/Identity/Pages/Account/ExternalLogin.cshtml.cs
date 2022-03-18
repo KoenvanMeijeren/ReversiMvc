@@ -145,7 +145,7 @@ public class ExternalLoginModel : PageModel
             this.ModelState.AddModelError(string.Empty, IRecaptcha.InvalidMessage);
             return this.Page();
         }
-        
+
         returnUrl = returnUrl ?? this.Url.Content("~/");
         // Get the information about the user from the external login provider
         var info = await this._signInManager.GetExternalLoginInfoAsync();

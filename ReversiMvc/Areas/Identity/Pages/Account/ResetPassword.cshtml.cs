@@ -95,7 +95,7 @@ public class ResetPasswordModel : PageModel
             this.ModelState.AddModelError(string.Empty, IRecaptcha.InvalidMessage);
             return this.Page();
         }
-        
+
         if (!this.ModelState.IsValid)
         {
             return this.Page();

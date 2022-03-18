@@ -96,7 +96,7 @@ public class LoginWith2faModel : PageModel
             this.ModelState.AddModelError(string.Empty, IRecaptcha.InvalidMessage);
             return this.Page();
         }
-        
+
         if (!this.ModelState.IsValid)
         {
             return this.Page();
@@ -127,7 +127,7 @@ public class LoginWith2faModel : PageModel
             this._logger.LogWarning("User with ID '{UserId}' account locked out.", user.Id);
             return this.RedirectToPage("./Lockout");
         }
-        
+
         this._logger.LogWarning("Invalid authenticator code entered for user with ID '{UserId}'.", user.Id);
         this.ModelState.AddModelError(string.Empty, "Ongeldige authenticator code.");
         return this.Page();

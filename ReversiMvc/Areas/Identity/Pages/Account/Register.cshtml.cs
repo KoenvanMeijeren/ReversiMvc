@@ -111,7 +111,7 @@ public class RegisterModel : PageModel
             this.ModelState.AddModelError(string.Empty, IRecaptcha.InvalidMessage);
             return this.Page();
         }
-        
+
         returnUrl ??= this.Url.Content("~/");
         this.ExternalLogins = (await this._signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         if (!this.ModelState.IsValid)

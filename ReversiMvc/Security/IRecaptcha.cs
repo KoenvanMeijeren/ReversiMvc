@@ -7,9 +7,9 @@ namespace ReversiMvc.Security;
 public interface IRecaptcha
 {
     public const string InvalidMessage = "De reCAPTCHA is ongeldig!";
-    
+
     public string SiteKey { get; }
-    
+
     /// <summary>
     /// Validates te reCAPTCHA request.
     /// </summary>

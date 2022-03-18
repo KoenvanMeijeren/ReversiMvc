@@ -11,12 +11,12 @@ public class Recaptcha : IRecaptcha
 {
     private readonly RecaptchaConfiguration _configuration;
     public string SiteKey => this._configuration.SiteKey;
-    
+
     public Recaptcha(RecaptchaConfiguration configuration)
     {
         this._configuration = configuration;
     }
-    
+
     /// <inheritdoc />
     public async Task<bool> Validate(IFormCollection formCollection, IPAddress? clientIp)
     {
@@ -24,9 +24,9 @@ public class Recaptcha : IRecaptcha
         {
             return false;
         }
-        
+
         string? captchaResponse = null;
-        if(formCollection.TryGetValue(Constants.ClientResponseKey, out var formField))
+        if (formCollection.TryGetValue(Constants.ClientResponseKey, out var formField))
         {
             captchaResponse = formField;
         }
@@ -35,9 +35,9 @@ public class Recaptcha : IRecaptcha
         {
             return false;
         }
-        
+
         var captchaApi = new ReCaptchaService();
-        
+
         return await captchaApi.Verify2Async(captchaResponse, clientIp.ToString(), this._configuration.PrivateKey);
     }
 
