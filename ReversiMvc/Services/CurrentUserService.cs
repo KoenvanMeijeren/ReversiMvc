@@ -19,5 +19,7 @@ public class CurrentUserService : ICurrentUserService
 
     public string? Guid => this._user?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
+    public string? Name => this._user?.Identity?.Name;
+
     public IIdentity? Identity => this._user?.Identity;
 }

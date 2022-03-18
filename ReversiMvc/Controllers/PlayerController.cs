@@ -1,6 +1,7 @@
 ﻿#nullable disable
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ReversiMvc.Services.Contracts;
 
 namespace ReversiMvc.Controllers;
 
@@ -8,15 +9,21 @@ namespace ReversiMvc.Controllers;
 public class PlayerController : Controller
 {
     private readonly IPlayersRepository _repository;
+    private readonly ILogger<PlayerController> _logger;
+    private readonly string _currentUser;
 
-    public PlayerController(IPlayersRepository repository)
+    public PlayerController(IPlayersRepository repository, ILogger<PlayerController> logger, ICurrentUserService currentUser)
     {
         this._repository = repository;
+        this._logger = logger;
+        this._currentUser = currentUser.Name;
     }
 
     // GET: Players
     public async Task<IActionResult> Index()
     {
+        this._logger.LogInformation("User {User} has viewed all players", this._currentUser);
+
         return this.View(await this._repository.AllAsync());
     }
 
@@ -34,6 +41,8 @@ public class PlayerController : Controller
         {
             return this.NotFound();
         }
+
+        this._logger.LogInformation("User {User} has viewed the details of player {Player}", this._currentUser, playerEntity.Guid);
 
         return this.View(playerEntity);
     }
@@ -57,6 +66,9 @@ public class PlayerController : Controller
         }
 
         await this._repository.AddAsync(playerEntity);
+
+        this._logger.LogInformation("User {User} has created player {Player}", this._currentUser, playerEntity.Guid);
+
         return this.RedirectToAction(nameof(this.Index));
     }
 
@@ -107,6 +119,8 @@ public class PlayerController : Controller
             throw;
         }
 
+        this._logger.LogInformation("User {User} has updated player {Player}", this._currentUser, playerEntity.Guid);
+
         return this.RedirectToAction(nameof(this.Index));
     }
 
@@ -136,6 +150,9 @@ public class PlayerController : Controller
         var playerEntity = await this._repository.GetDbSet().FindAsync(id);
 
         await this._repository.DeleteAsync(playerEntity);
+
+        this._logger.LogInformation("User {User} has deleted player {Player}", this._currentUser, playerEntity.Guid);
+
         return this.RedirectToAction(nameof(this.Index));
     }
 
