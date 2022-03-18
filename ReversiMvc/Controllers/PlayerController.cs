@@ -23,7 +23,7 @@ public class PlayerController : Controller
     public async Task<IActionResult> Index()
     {
         this._logger.LogInformation("User {User} has viewed all players", this._currentUser);
-        
+
         return this.View(await this._repository.AllAsync());
     }
 
@@ -43,7 +43,7 @@ public class PlayerController : Controller
         }
 
         this._logger.LogInformation("User {User} has viewed the details of player {Player}", this._currentUser, playerEntity.Guid);
-        
+
         return this.View(playerEntity);
     }
 
@@ -66,9 +66,9 @@ public class PlayerController : Controller
         }
 
         await this._repository.AddAsync(playerEntity);
-        
+
         this._logger.LogInformation("User {User} has created player {Player}", this._currentUser, playerEntity.Guid);
-        
+
         return this.RedirectToAction(nameof(this.Index));
     }
 
@@ -120,7 +120,7 @@ public class PlayerController : Controller
         }
 
         this._logger.LogInformation("User {User} has updated player {Player}", this._currentUser, playerEntity.Guid);
-        
+
         return this.RedirectToAction(nameof(this.Index));
     }
 
@@ -150,9 +150,9 @@ public class PlayerController : Controller
         var playerEntity = await this._repository.GetDbSet().FindAsync(id);
 
         await this._repository.DeleteAsync(playerEntity);
-        
+
         this._logger.LogInformation("User {User} has deleted player {Player}", this._currentUser, playerEntity.Guid);
-        
+
         return this.RedirectToAction(nameof(this.Index));
     }
 

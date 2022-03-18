@@ -26,12 +26,12 @@ public class GameController : Controller
         if (entity != null)
         {
             this._logger.LogWarning("Player {Player} has tried to view all games while playing another game {Game}", this._currentUser, entity.Token);
-            
+
             return this.View("InvalidActionMessage", new InvalidActionViewModel { Message = "Je bent al gekoppeld aan een spel!" });
         }
 
         this._logger.LogInformation("Player {User} has viewed all games", this._currentUser);
-        
+
         var entities = from game in await this._repository.AllAsync() select new GameEditViewModel(game, this._currentPlayer);
 
         return this.View(entities);
@@ -47,7 +47,7 @@ public class GameController : Controller
         }
 
         this._logger.LogWarning("Player {Player} has tried to create a new game while playing the game {Game}", this._currentUser, entity.Token);
-            
+
         return this.View("InvalidActionMessage", new InvalidActionViewModel { Message = "Je bent al gekoppeld aan een spel!" });
 
     }
@@ -63,7 +63,7 @@ public class GameController : Controller
         if (entity != null)
         {
             this._logger.LogWarning("Player {Player} has tried to create a new game while playing the game {Game}", this._currentUser, entity.Token);
-            
+
             return this.View("InvalidActionMessage", new InvalidActionViewModel { Message = "Je bent al gekoppeld aan een spel!" });
         }
 
@@ -75,9 +75,9 @@ public class GameController : Controller
         var game = await this._repository.AddAsync(gameJsonDto);
         await this._repository.AddPlayerOneAsync(game.Token, this._currentPlayer.Guid, this._currentPlayer.Name);
 
-        
+
         this._logger.LogInformation("Player {User} has created a new game {Game}", this._currentUser, game.Token);
-        
+
         return this.RedirectToAction(nameof(this.Details), new { token = game.Token });
     }
 
@@ -88,7 +88,7 @@ public class GameController : Controller
         if (gameEntity == null)
         {
             this._logger.LogWarning("Player {Player} has tried to view the details of the game {Game} while playing another game", this._currentUser, gameEntity.Token);
-            
+
             return this.View("InvalidActionMessage", new InvalidActionViewModel { Message = "Het gekozen spel bestaat niet!" });
         }
 
@@ -96,10 +96,10 @@ public class GameController : Controller
         if (entity != null && !entity.Token.Equals(gameEntity.Token))
         {
             this._logger.LogWarning("Player {Player} has tried to view the details of a game while playing another game", this._currentUser);
-            
+
             return this.View("InvalidActionMessage", new InvalidActionViewModel { Message = "Je bent al gekoppeld aan een spel!" });
         }
-        
+
         this._logger.LogInformation("Player {User} has viewed the details of game {Game}", this._currentUser, gameEntity.Token);
 
         return this.View(new GameEditViewModel(gameEntity, this._currentPlayer));
@@ -111,7 +111,7 @@ public class GameController : Controller
         if (entity != null)
         {
             this._logger.LogWarning("Player {Player} has tried to participate to the game {Game} while playing another game", this._currentUser, entity.Token);
-            
+
             return this.View("InvalidActionMessage", new InvalidActionViewModel { Message = "Je bent al gekoppeld aan een spel!" });
         }
 
@@ -119,7 +119,7 @@ public class GameController : Controller
         if (game == null)
         {
             this._logger.LogWarning("Player {Player} has tried to participate to an unknown game", this._currentUser);
-            
+
             return this.View("InvalidActionMessage", new InvalidActionViewModel { Message = "Het gekozen spel bestaat niet!" });
         }
 
@@ -137,7 +137,7 @@ public class GameController : Controller
         if (entity != null)
         {
             this._logger.LogWarning("Player {Player} has tried to participate to the game {Game} while playing another game", this._currentUser, entity.Token);
-            
+
             return this.View("InvalidActionMessage", new InvalidActionViewModel { Message = "Je bent al gekoppeld aan een spel!" });
         }
 
@@ -145,7 +145,7 @@ public class GameController : Controller
         if (game == null)
         {
             this._logger.LogWarning("Player {Player} has tried to participate to an unknown game", this._currentUser);
-            
+
             return this.View("InvalidActionMessage", new InvalidActionViewModel { Message = "Het gekozen spel bestaat niet!" });
         }
 
@@ -160,7 +160,7 @@ public class GameController : Controller
         if (game == null)
         {
             this._logger.LogWarning("Player {Player} has tried to start an unknown game", this._currentUser);
-            
+
             return this.View("InvalidActionMessage", new InvalidActionViewModel { Message = "Het gekozen spel bestaat niet!" });
         }
 
@@ -168,7 +168,7 @@ public class GameController : Controller
         if (!viewModel.CanStart())
         {
             this._logger.LogWarning("Player {Player} has tried to start the game {Game} while playing another game", this._currentUser, viewModel.Token);
-            
+
             return this.View("InvalidActionMessage", new InvalidActionViewModel { Message = "Alleen speler 1 kan het spel starten!" });
         }
 
@@ -186,7 +186,7 @@ public class GameController : Controller
         if (game == null)
         {
             this._logger.LogWarning("Player {Player} has tried to start an unknown game", this._currentUser);
-            
+
             return this.View("InvalidActionMessage", new InvalidActionViewModel { Message = "Het gekozen spel bestaat niet!" });
         }
 
@@ -194,7 +194,7 @@ public class GameController : Controller
         if (!viewModel.CanStart())
         {
             this._logger.LogWarning("Player {Player} has tried to start the game {Game} while playing another game", this._currentUser, viewModel.Token);
-            
+
             return this.View("InvalidActionMessage", new InvalidActionViewModel { Message = "Alleen speler 1 kan het spel starten!" });
         }
 
@@ -209,7 +209,7 @@ public class GameController : Controller
         if (game == null)
         {
             this._logger.LogWarning("Player {Player} has tried to quit an unknown game", this._currentUser);
-            
+
             return this.View("InvalidActionMessage", new InvalidActionViewModel { Message = "Het gekozen spel bestaat niet!" });
         }
 
@@ -217,7 +217,7 @@ public class GameController : Controller
         if (!viewModel.CanQuit())
         {
             this._logger.LogWarning("Player {Player} has tried to quit the game {Game} while playing another game", this._currentUser, viewModel.Token);
-            
+
             return this.View("InvalidActionMessage", new InvalidActionViewModel { Message = "Je kan alleen het spel stoppen waar jij aan gekoppeld bent!" });
         }
 
@@ -235,7 +235,7 @@ public class GameController : Controller
         if (game == null)
         {
             this._logger.LogWarning("Player {Player} has tried to quit an unknown game", this._currentUser);
-            
+
             return this.View("InvalidActionMessage", new InvalidActionViewModel { Message = "Het gekozen spel bestaat niet!" });
         }
 
@@ -243,7 +243,7 @@ public class GameController : Controller
         if (!viewModel.CanQuit())
         {
             this._logger.LogWarning("Player {Player} has tried to quit the game {Game} while playing another game", this._currentUser, viewModel.Token);
-            
+
             return this.View("InvalidActionMessage", new InvalidActionViewModel { Message = "Je kan alleen het spel stoppen waar jij aan gekoppeld bent!" });
         }
 
