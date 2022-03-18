@@ -8,5 +8,6 @@ public interface ICurrentUserService
 {
     public string? UserId { get; }
     public string? Guid { get; }
+    public string? Name { get; }
     public IIdentity? Identity { get; }
 }
