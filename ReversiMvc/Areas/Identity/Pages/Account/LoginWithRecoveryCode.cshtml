@@ -1,5 +1,7 @@
 ﻿@page
 @model LoginWithRecoveryCodeModel
+@using ReversiMvc.Security
+@inject IRecaptcha _recaptcha;
 @{
     ViewData["Title"] = "Recovery code verification";
 }
@@ -20,6 +22,8 @@
                 <label asp-for="Input.RecoveryCode" class="form-label"></label>
                 <span asp-validation-for="Input.RecoveryCode" class="text-danger"></span>
             </div>
+            
+            <div class="g-recaptcha" data-sitekey="@this._recaptcha.SiteKey"></div>
             <button type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
         </form>
     </div>
@@ -27,4 +31,5 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 }

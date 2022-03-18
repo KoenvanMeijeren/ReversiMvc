@@ -1,5 +1,7 @@
 ﻿@page
 @model LoginWith2faModel
+@using ReversiMvc.Security
+@inject IRecaptcha _recaptcha;
 @{
     ViewData["Title"] = "2-factor authenticatie";
 }
@@ -15,7 +17,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-floating">
                 <input asp-for="Input.TwoFactorCode" class="form-control" autocomplete="off"/>
-                <label asp-for="Input.TwoFactorCode" class="form-label">Authenticator code</label>
+                <label asp-for="Input.TwoFactorCode" class="form-label" autofocus="autofocus">Authenticator code</label>
                 <span asp-validation-for="Input.TwoFactorCode" class="text-danger"></span>
             </div>
             <div>
@@ -26,7 +28,9 @@
                     </label>
                 </div>
             </div>
+            
             <div>
+                <div class="g-recaptcha" data-sitekey="@this._recaptcha.SiteKey"></div>
                 <button type="submit" class="w-100 btn btn-lg btn-primary">Inloggen</button>
             </div>
         </form>
@@ -39,4 +43,5 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 }

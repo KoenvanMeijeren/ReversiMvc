@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using ReversiMvc.Security;
 
 namespace ReversiMvc.Areas.Identity.Pages.Account;
 
@@ -24,13 +25,15 @@ public class ExternalLoginModel : PageModel
     private readonly IUserEmailStore<IdentityUser> _emailStore;
     private readonly IEmailSender _emailSender;
     private readonly ILogger<ExternalLoginModel> _logger;
+    private readonly IRecaptcha _recaptcha;
 
     public ExternalLoginModel(
         SignInManager<IdentityUser> signInManager,
         UserManager<IdentityUser> userManager,
         IUserStore<IdentityUser> userStore,
         ILogger<ExternalLoginModel> logger,
-        IEmailSender emailSender)
+        IEmailSender emailSender,
+        IRecaptcha recaptcha)
     {
         this._signInManager = signInManager;
         this._userManager = userManager;
@@ -38,6 +41,7 @@ public class ExternalLoginModel : PageModel
         this._emailStore = this.GetEmailStore();
         this._logger = logger;
         this._emailSender = emailSender;
+        this._recaptcha = recaptcha;
     }
 
     /// <summary>
@@ -135,6 +139,13 @@ public class ExternalLoginModel : PageModel
 
     public async Task<IActionResult> OnPostConfirmationAsync(string returnUrl = null)
     {
+        var recaptchaPassed = await this._recaptcha.Validate(this.Request.Form, this.HttpContext.Connection.RemoteIpAddress);
+        if (!recaptchaPassed)
+        {
+            this.ModelState.AddModelError(string.Empty, IRecaptcha.InvalidMessage);
+            return this.Page();
+        }
+
         returnUrl = returnUrl ?? this.Url.Content("~/");
         // Get the information about the user from the external login provider
         var info = await this._signInManager.GetExternalLoginInfoAsync();

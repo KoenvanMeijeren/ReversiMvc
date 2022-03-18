@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using ReversiMvc.Security;
 
 namespace ReversiMvc.Areas.Identity.Pages.Account;
 
@@ -14,11 +15,13 @@ public class LoginModel : PageModel
 {
     private readonly SignInManager<IdentityUser> _signInManager;
     private readonly ILogger<LoginModel> _logger;
+    private readonly IRecaptcha _recaptcha;
 
-    public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger)
+    public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger, IRecaptcha recaptcha)
     {
         this._signInManager = signInManager;
         this._logger = logger;
+        this._recaptcha = recaptcha;
     }
 
     /// <summary>
@@ -100,33 +103,39 @@ public class LoginModel : PageModel
 
         this.ExternalLogins = (await this._signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
-        if (this.ModelState.IsValid)
+        var recaptchaPassed = await this._recaptcha.Validate(this.Request.Form, this.HttpContext.Connection.RemoteIpAddress);
+        if (!recaptchaPassed)
         {
-            // This doesn't count login failures towards account lockout
-            // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-            var result = await this._signInManager.PasswordSignInAsync(this.Input.Email, this.Input.Password, this.Input.RememberMe, lockoutOnFailure: false);
-            if (result.Succeeded)
-            {
-                this._logger.LogInformation("User logged in.");
-                return this.LocalRedirect(returnUrl);
-            }
-            if (result.RequiresTwoFactor)
-            {
-                return this.RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = this.Input.RememberMe });
-            }
-            if (result.IsLockedOut)
-            {
-                this._logger.LogWarning("User account locked out.");
-                return this.RedirectToPage("./Lockout");
-            }
-            else
-            {
-                this.ModelState.AddModelError(string.Empty, "Ongeldige inlog poging.");
-                return this.Page();
-            }
+            this.ModelState.AddModelError(string.Empty, IRecaptcha.InvalidMessage);
+            return this.Page();
         }
 
-        // If we got this far, something failed, redisplay form
+        if (!this.ModelState.IsValid)
+        {
+            return this.Page();
+        }
+
+        // This doesn't count login failures towards account lockout
+        // To enable password failures to trigger account lockout, set lockoutOnFailure: true
+        var result = await this._signInManager.PasswordSignInAsync(this.Input.Email, this.Input.Password, this.Input.RememberMe, lockoutOnFailure: false);
+        if (result.Succeeded)
+        {
+            this._logger.LogInformation("User logged in.");
+            return this.LocalRedirect(returnUrl);
+        }
+
+        if (result.RequiresTwoFactor)
+        {
+            return this.RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = this.Input.RememberMe });
+        }
+
+        if (result.IsLockedOut)
+        {
+            this._logger.LogWarning("User account locked out.");
+            return this.RedirectToPage("./Lockout");
+        }
+
+        this.ModelState.AddModelError(string.Empty, "Ongeldige inlog poging.");
         return this.Page();
     }
 }

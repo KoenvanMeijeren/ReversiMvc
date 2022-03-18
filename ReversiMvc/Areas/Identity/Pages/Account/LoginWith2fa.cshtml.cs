@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Identity;
+using ReversiMvc.Security;
 
 namespace ReversiMvc.Areas.Identity.Pages.Account;
 
@@ -14,15 +15,18 @@ public class LoginWith2faModel : PageModel
     private readonly SignInManager<IdentityUser> _signInManager;
     private readonly UserManager<IdentityUser> _userManager;
     private readonly ILogger<LoginWith2faModel> _logger;
+    private readonly IRecaptcha _recaptcha;
 
     public LoginWith2faModel(
         SignInManager<IdentityUser> signInManager,
         UserManager<IdentityUser> userManager,
-        ILogger<LoginWith2faModel> logger)
+        ILogger<LoginWith2faModel> logger,
+        IRecaptcha recaptcha)
     {
         this._signInManager = signInManager;
         this._userManager = userManager;
         this._logger = logger;
+        this._recaptcha = recaptcha;
     }
 
     /// <summary>
@@ -86,12 +90,19 @@ public class LoginWith2faModel : PageModel
 
     public async Task<IActionResult> OnPostAsync(bool rememberMe, string returnUrl = null)
     {
+        var recaptchaPassed = await this._recaptcha.Validate(this.Request.Form, this.HttpContext.Connection.RemoteIpAddress);
+        if (!recaptchaPassed)
+        {
+            this.ModelState.AddModelError(string.Empty, IRecaptcha.InvalidMessage);
+            return this.Page();
+        }
+
         if (!this.ModelState.IsValid)
         {
             return this.Page();
         }
 
-        returnUrl = returnUrl ?? this.Url.Content("~/");
+        returnUrl ??= this.Url.Content("~/");
 
         var user = await this._signInManager.GetTwoFactorAuthenticationUserAsync();
         if (user == null)
@@ -110,16 +121,15 @@ public class LoginWith2faModel : PageModel
             this._logger.LogInformation("User with ID '{UserId}' logged in with 2fa.", user.Id);
             return this.LocalRedirect(returnUrl);
         }
-        else if (result.IsLockedOut)
+
+        if (result.IsLockedOut)
         {
             this._logger.LogWarning("User with ID '{UserId}' account locked out.", user.Id);
             return this.RedirectToPage("./Lockout");
         }
-        else
-        {
-            this._logger.LogWarning("Invalid authenticator code entered for user with ID '{UserId}'.", user.Id);
-            this.ModelState.AddModelError(string.Empty, "Ongeldige authenticator code.");
-            return this.Page();
-        }
+
+        this._logger.LogWarning("Invalid authenticator code entered for user with ID '{UserId}'.", user.Id);
+        this.ModelState.AddModelError(string.Empty, "Ongeldige authenticator code.");
+        return this.Page();
     }
 }

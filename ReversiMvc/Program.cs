@@ -5,6 +5,7 @@ global using ReversiMvc.Models.Entities;
 global using ReversiMvc.Repository;
 global using ReversiMvc.Repository.Contracts;
 using Microsoft.AspNetCore.Identity;
+using ReversiMvc.Security;
 using ReversiMvc.Services;
 using ReversiMvc.Services.Contracts;
 
@@ -22,6 +23,9 @@ builder.Services
     .AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddSingleton(builder.Configuration.GetSection("Recaptcha").Get<RecaptchaConfiguration>());
+builder.Services.AddSingleton<IRecaptcha, Recaptcha>();
 
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 builder.Services.AddScoped<IGameRepository, GameRepository>();

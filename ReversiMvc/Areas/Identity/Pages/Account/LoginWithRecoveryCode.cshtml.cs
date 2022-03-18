@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using ReversiMvc.Security;
 
 namespace ReversiMvc.Areas.Identity.Pages.Account;
 
@@ -14,15 +15,18 @@ public class LoginWithRecoveryCodeModel : PageModel
     private readonly SignInManager<IdentityUser> _signInManager;
     private readonly UserManager<IdentityUser> _userManager;
     private readonly ILogger<LoginWithRecoveryCodeModel> _logger;
+    private readonly IRecaptcha _recaptcha;
 
     public LoginWithRecoveryCodeModel(
         SignInManager<IdentityUser> signInManager,
         UserManager<IdentityUser> userManager,
-        ILogger<LoginWithRecoveryCodeModel> logger)
+        ILogger<LoginWithRecoveryCodeModel> logger,
+        IRecaptcha recaptcha)
     {
         this._signInManager = signInManager;
         this._userManager = userManager;
         this._logger = logger;
+        this._recaptcha = recaptcha;
     }
 
     /// <summary>
@@ -71,6 +75,13 @@ public class LoginWithRecoveryCodeModel : PageModel
 
     public async Task<IActionResult> OnPostAsync(string returnUrl = null)
     {
+        var recaptchaPassed = await this._recaptcha.Validate(this.Request.Form, this.HttpContext.Connection.RemoteIpAddress);
+        if (!recaptchaPassed)
+        {
+            this.ModelState.AddModelError(string.Empty, IRecaptcha.InvalidMessage);
+            return this.Page();
+        }
+
         if (!this.ModelState.IsValid)
         {
             return this.Page();

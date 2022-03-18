@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using ReversiMvc.Security;
 
 namespace ReversiMvc.Areas.Identity.Pages.Account;
 
@@ -22,13 +23,15 @@ public class RegisterModel : PageModel
     private readonly IUserEmailStore<IdentityUser> _emailStore;
     private readonly ILogger<RegisterModel> _logger;
     private readonly IEmailSender _emailSender;
+    private readonly IRecaptcha _recaptcha;
 
     public RegisterModel(
         UserManager<IdentityUser> userManager,
         IUserStore<IdentityUser> userStore,
         SignInManager<IdentityUser> signInManager,
         ILogger<RegisterModel> logger,
-        IEmailSender emailSender)
+        IEmailSender emailSender,
+        IRecaptcha recaptcha)
     {
         this._userManager = userManager;
         this._userStore = userStore;
@@ -36,6 +39,7 @@ public class RegisterModel : PageModel
         this._signInManager = signInManager;
         this._logger = logger;
         this._emailSender = emailSender;
+        this._recaptcha = recaptcha;
     }
 
     /// <summary>
@@ -101,6 +105,13 @@ public class RegisterModel : PageModel
 
     public async Task<IActionResult> OnPostAsync(string returnUrl = null)
     {
+        var recaptchaPassed = await this._recaptcha.Validate(this.Request.Form, this.HttpContext.Connection.RemoteIpAddress);
+        if (!recaptchaPassed)
+        {
+            this.ModelState.AddModelError(string.Empty, IRecaptcha.InvalidMessage);
+            return this.Page();
+        }
+
         returnUrl ??= this.Url.Content("~/");
         this.ExternalLogins = (await this._signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         if (!this.ModelState.IsValid)
