@@ -103,44 +103,46 @@ public class RegisterModel : PageModel
     {
         returnUrl ??= this.Url.Content("~/");
         this.ExternalLogins = (await this._signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-        if (this.ModelState.IsValid)
+        if (!this.ModelState.IsValid)
         {
-            var user = this.CreateUser();
+            return this.Page();
+        }
 
-            await this._userStore.SetUserNameAsync(user, this.Input.Email, CancellationToken.None);
-            await this._emailStore.SetEmailAsync(user, this.Input.Email, CancellationToken.None);
-            var result = await this._userManager.CreateAsync(user, this.Input.Password);
+        var user = this.CreateUser();
 
-            if (result.Succeeded)
+        await this._userStore.SetUserNameAsync(user, this.Input.Email, CancellationToken.None);
+        await this._emailStore.SetEmailAsync(user, this.Input.Email, CancellationToken.None);
+        var result = await this._userManager.CreateAsync(user, this.Input.Password);
+
+        if (result.Succeeded)
+        {
+            this._logger.LogInformation("User created a new account with password.");
+
+            var userId = await this._userManager.GetUserIdAsync(user);
+            var code = await this._userManager.GenerateEmailConfirmationTokenAsync(user);
+            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+            var callbackUrl = this.Url.Page(
+                "/Account/ConfirmEmail",
+                pageHandler: null,
+                values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
+                protocol: this.Request.Scheme);
+
+            await this._emailSender.SendEmailAsync(this.Input.Email, "Confirm your email",
+                $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+            if (this._userManager.Options.SignIn.RequireConfirmedAccount)
             {
-                this._logger.LogInformation("User created a new account with password.");
-
-                var userId = await this._userManager.GetUserIdAsync(user);
-                var code = await this._userManager.GenerateEmailConfirmationTokenAsync(user);
-                code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                var callbackUrl = this.Url.Page(
-                    "/Account/ConfirmEmail",
-                    pageHandler: null,
-                    values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
-                    protocol: this.Request.Scheme);
-
-                await this._emailSender.SendEmailAsync(this.Input.Email, "Confirm your email",
-                    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
-                if (this._userManager.Options.SignIn.RequireConfirmedAccount)
-                {
-                    return this.RedirectToPage("RegisterConfirmation", new { email = this.Input.Email, returnUrl = returnUrl });
-                }
-                else
-                {
-                    await this._signInManager.SignInAsync(user, isPersistent: false);
-                    return this.LocalRedirect(returnUrl);
-                }
+                return this.RedirectToPage("RegisterConfirmation", new { email = this.Input.Email, returnUrl = returnUrl });
             }
-            foreach (var error in result.Errors)
+            else
             {
-                this.ModelState.AddModelError(string.Empty, error.Description);
+                await this._signInManager.SignInAsync(user, isPersistent: false);
+                return this.LocalRedirect(returnUrl);
             }
+        }
+        foreach (var error in result.Errors)
+        {
+            this.ModelState.AddModelError(string.Empty, error.Description);
         }
 
         // If we got this far, something failed, redisplay form
