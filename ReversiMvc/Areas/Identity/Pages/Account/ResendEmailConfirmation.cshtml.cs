@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using ReversiMvc.Security;
 
 namespace ReversiMvc.Areas.Identity.Pages.Account;
 
@@ -19,11 +20,13 @@ public class ResendEmailConfirmationModel : PageModel
 {
     private readonly UserManager<IdentityUser> _userManager;
     private readonly IEmailSender _emailSender;
+    private readonly IRecaptcha _recaptcha;
 
-    public ResendEmailConfirmationModel(UserManager<IdentityUser> userManager, IEmailSender emailSender)
+    public ResendEmailConfirmationModel(UserManager<IdentityUser> userManager, IEmailSender emailSender, IRecaptcha recaptcha)
     {
         this._userManager = userManager;
         this._emailSender = emailSender;
+        this._recaptcha = recaptcha;
     }
 
     /// <summary>
@@ -54,6 +57,13 @@ public class ResendEmailConfirmationModel : PageModel
 
     public async Task<IActionResult> OnPostAsync()
     {
+        var recaptchaPassed = await this._recaptcha.Validate(this.Request.Form, this.HttpContext.Connection.RemoteIpAddress);
+        if (!recaptchaPassed)
+        {
+            this.ModelState.AddModelError(string.Empty, IRecaptcha.InvalidMessage);
+            return this.Page();
+        }
+        
         if (!this.ModelState.IsValid)
         {
             return this.Page();

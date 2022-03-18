@@ -16,5 +16,5 @@ public interface IRecaptcha
     /// <param name="formCollection">The form collection.</param>
     /// <param name="clientIp">The IP of the client.</param>
     /// <returns>Whether the client passed the recaptcha check or not.</returns>
-    Task<bool> Validate(IFormCollection formCollection, IPAddress clientIp);
+    Task<bool> Validate(IFormCollection formCollection, IPAddress? clientIp);
 }

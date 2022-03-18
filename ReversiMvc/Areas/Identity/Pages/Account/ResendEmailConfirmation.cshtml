@@ -1,4 +1,6 @@
 ﻿@page
+@using ReversiMvc.Security
+@inject IRecaptcha _recaptcha;
 @model ResendEmailConfirmationModel
 @{
     ViewData["Title"] = "Email bevestiging opnieuw versturen";
@@ -16,6 +18,8 @@
                 <label asp-for="Input.Email" class="form-label">Email</label>
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
             </div>
+            
+            <div class="g-recaptcha" data-sitekey="@this._recaptcha.SiteKey"></div>
             <button type="submit" class="w-100 btn btn-lg btn-primary">Opnieuw sturen</button>
         </form>
     </div>
@@ -23,4 +27,5 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 }

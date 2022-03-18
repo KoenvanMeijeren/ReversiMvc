@@ -18,8 +18,13 @@ public class Recaptcha : IRecaptcha
     }
     
     /// <inheritdoc />
-    public async Task<bool> Validate(IFormCollection formCollection, IPAddress clientIp)
+    public async Task<bool> Validate(IFormCollection formCollection, IPAddress? clientIp)
     {
+        if (clientIp == null)
+        {
+            return false;
+        }
+        
         string? captchaResponse = null;
         if(formCollection.TryGetValue(Constants.ClientResponseKey, out var formField))
         {

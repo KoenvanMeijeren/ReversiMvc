@@ -8,16 +8,19 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using ReversiMvc.Security;
 
 namespace ReversiMvc.Areas.Identity.Pages.Account;
 
 public class ResetPasswordModel : PageModel
 {
     private readonly UserManager<IdentityUser> _userManager;
+    private readonly IRecaptcha _recaptcha;
 
-    public ResetPasswordModel(UserManager<IdentityUser> userManager)
+    public ResetPasswordModel(UserManager<IdentityUser> userManager, IRecaptcha recaptcha)
     {
         this._userManager = userManager;
+        this._recaptcha = recaptcha;
     }
 
     /// <summary>
@@ -86,6 +89,13 @@ public class ResetPasswordModel : PageModel
 
     public async Task<IActionResult> OnPostAsync()
     {
+        var recaptchaPassed = await this._recaptcha.Validate(this.Request.Form, this.HttpContext.Connection.RemoteIpAddress);
+        if (!recaptchaPassed)
+        {
+            this.ModelState.AddModelError(string.Empty, IRecaptcha.InvalidMessage);
+            return this.Page();
+        }
+        
         if (!this.ModelState.IsValid)
         {
             return this.Page();
