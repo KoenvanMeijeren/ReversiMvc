@@ -1,12 +1,10 @@
 @model ReversiMvc.Models.Entities.PlayerEntity
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Speler bewerken";
 }
 
-<h1>Edit</h1>
-
-<h4>PlayerEntity</h4>
+<h1>@ViewData["Title"]</h1>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -14,19 +12,19 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Guid" />
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
+                <label asp-for="Name" class="control-label">Naam</label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <button type="submit" class="btn btn-primary">Opslaan</button>
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Terug naar spelersoverzicht</a>
 </div>
 
