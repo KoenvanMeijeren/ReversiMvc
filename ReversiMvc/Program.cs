@@ -4,7 +4,9 @@ global using ReversiMvc.Models;
 global using ReversiMvc.Models.Entities;
 global using ReversiMvc.Repository;
 global using ReversiMvc.Repository.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using ReversiMvc.Authorization;
 using ReversiMvc.Security;
 using ReversiMvc.Services;
 using ReversiMvc.Services.Contracts;
@@ -21,15 +23,35 @@ builder.Services.AddDbContext<ReversiDbContext>(
 
 builder.Services
     .AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("canManagePlayer",
+        policyBuilder => policyBuilder.AddRequirements(
+            new IsAllowedToManagePlayerRequirement()
+        )
+    );
+    
+    options.AddPolicy("canManageUsers",
+        policyBuilder => policyBuilder.AddRequirements(
+            new IsAllowedToManageUsersRequirement()
+        )
+    );
+});
+
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddSingleton(builder.Configuration.GetSection("Recaptcha").Get<RecaptchaConfiguration>());
 builder.Services.AddSingleton<IRecaptcha, Recaptcha>();
+builder.Services.AddSingleton<IAuthorizationHandler, IsAdminHandler>();
+builder.Services.AddSingleton<IAuthorizationHandler, IsMediatorHandler>();
 
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 builder.Services.AddScoped<IGameRepository, GameRepository>();
 builder.Services.AddScoped<IPlayersRepository, PlayersRepository>();
+builder.Services.AddScoped<IRepository<IdentityUser>, UsersRepository>();
 builder.Services.AddScoped<ICurrentPlayerService, CurrentPlayerService>();
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();

@@ -5,7 +5,7 @@ using ReversiMvc.Services.Contracts;
 
 namespace ReversiMvc.Controllers;
 
-[Authorize]
+[Authorize(policy: "canManagePlayer")]
 public class PlayerController : Controller
 {
     private readonly IPlayersRepository _repository;

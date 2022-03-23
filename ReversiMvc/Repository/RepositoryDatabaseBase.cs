@@ -1,6 +1,8 @@
-﻿namespace ReversiMvc.Repository;
+﻿using Microsoft.AspNetCore.Identity;
 
-public abstract class RepositoryDatabaseBase<T> : IRepository<T>, IAsyncRepository<T> where T : class, IEntity
+namespace ReversiMvc.Repository;
+
+public abstract class RepositoryDatabaseBase<T> : IRepository<T>, IAsyncRepository<T> where T : class
 {
     protected readonly DbContext Context;
 

@@ -5,7 +5,12 @@
 <ul class="navbar-nav">
     @if (this._signInManager.IsSignedIn(User))
     {
-        <li class="nav-item">
+        <li class="nav-item d-flex justify-content-start">
+            @if (this.User.IsInRole(ApplicationRoleTypes.Admin))
+            {
+                <a class="nav-link text-dark" asp-controller="Account" asp-action="Users" title="Manage accounts">Accounts</a>
+            }
+            
             <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Account</a>
         </li>
         <li class="nav-item">

@@ -1,0 +1,51 @@
+﻿@using ReversiMvc.Services.Contracts
+@model ReversiMvc.Models.ClaimEditViewModel
+@inject ICurrentUserService _currentUserService
+
+<div asp-validation-summary="All" class="text-danger m-2"></div>
+
+<table class="table table-sm table-striped table-bordered">
+    <thead>
+    <tr>
+        <th>Rol</th>
+        @if (this._currentUserService.Guid != null && !this._currentUserService.Guid.Equals(Model.Guid))
+        {
+            <th>Aanpassen</th>
+        }
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var role in Model.Roles)
+    {
+        <tr>
+            <td>@role</td>
+
+            @if (this._currentUserService.Guid != null && !this._currentUserService.Guid.Equals(Model.Guid))
+            {
+                <td>
+                    <a class="btn btn-danger" asp-controller="Account" asp-action="DeleteRole" asp-route-guid="@Model.Guid" asp-route-role="@role">
+                        Verwijderen
+                    </a>
+                </td>
+            }
+        </tr>
+    }
+    </tbody>
+</table>
+
+
+<h1>Nieuwe rol toevoegen</h1>
+<form method="post">
+    <input type="hidden" asp-for="Guid" value="@Model.Guid"/>
+    <input type="hidden" asp-for="Roles" value="@Model.Roles"/>
+    
+    <div class="row">
+        <div class="col">
+            <select class="form-control" asp-for="Role" asp-items="Model.roleSelectList"></select>
+        </div>
+
+        <div class="col">
+            <button asp-controller="Account" asp-action="Roles" type="submit" class="btn btn-success">Opslaan</button>
+        </div>
+    </div>
+</form>

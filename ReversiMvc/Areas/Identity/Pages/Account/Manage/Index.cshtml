@@ -20,6 +20,25 @@
                 <label asp-for="Input.PhoneNumber" class="form-label">Telefoonnummer</label>
                 <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
             </div>
+            
+            @if (User.IsInRole(ApplicationRoleTypes.Admin) || User.IsInRole(ApplicationRoleTypes.Mediator))
+            {
+                <label asp-for="Username" class="form-label">Rollen</label>
+                <div>
+                    <select multiple="multiple" disabled="disabled" style="overflow: hidden">
+                        @foreach (var role in ApplicationRoleTypes.All)
+                        {
+                            @if (!User.IsInRole(role))
+                            {
+                                continue;
+                            }
+                        
+                            <option value="@role" selected="selected">@role</option>
+                        }
+                    </select>
+                </div>
+            }
+
             <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">Opslaan</button>
         </form>
     </div>

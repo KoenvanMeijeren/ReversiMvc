@@ -17,6 +17,7 @@ public class HomeController : Controller
         this._gameRepository = gameRepository;
     }
 
+    [Authorize]
     public async Task<IActionResult> Index()
     {
         // Todo: find out how to do this when a sign in event occurs.
@@ -27,12 +28,7 @@ public class HomeController : Controller
             return this.RedirectToAction("Details", "Game", new { token = entity.Token });
         }
 
-        return this.View();
-    }
-
-    public IActionResult Privacy()
-    {
-        return this.View();
+        return this.RedirectToAction("Index", "Game");
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
