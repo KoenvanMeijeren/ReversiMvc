@@ -1,0 +1,35 @@
+﻿@using ReversiMvc.Services.Contracts
+@model ReversiMvc.Models.UsersViewModel
+@inject ICurrentUserService _currentUserService
+
+<div class="m-2">
+
+    <table class="table table-sm table-striped table-bordered">
+        <thead>
+        <tr>
+            <th>Gebruikersnaam</th>
+            <th>Rechten</th>
+            @if (this._currentUserService.IsAdmin())
+            {
+                <th></th>
+            }
+        </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model.Users)
+            {
+                <tr>
+                    <td>@user.UserName</td>
+                    <td>@user.NormalizedUserName</td>
+                    @if (this._currentUserService.IsAdmin())
+                    {
+                        <td>
+                            <a asp-controller="Account" asp-action="Roles" asp-route-guid="@user.Id">Beheer rechten</a>
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>

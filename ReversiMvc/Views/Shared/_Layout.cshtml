@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using ReversiMvc.Services.Contracts
+@inject ICurrentUserService _currentUserService
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
@@ -22,7 +25,11 @@
                 {
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                        <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Player" asp-action="Index">Spelers</a></li>
+                        @if (this._currentUserService.IsMediator())
+                        {
+                            <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Player" asp-action="Index">Spelers</a></li>
+                        }
+                        
                         <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Game" asp-action="Index">Spellen</a></li>
                     </ul>
                 }
@@ -41,7 +48,7 @@
 
 <footer class="border-top footer text-muted">
     <div class="container">
-        &copy; 2022 - Reversi - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        &copy; 2022 - Reversi
     </div>
 </footer>
 

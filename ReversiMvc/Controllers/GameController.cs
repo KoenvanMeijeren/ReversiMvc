@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ReversiMvc.Models.DataTransferObject;
 using ReversiMvc.Services.Contracts;
 
 namespace ReversiMvc.Controllers;
 
+[Authorize]
 public class GameController : Controller
 {
     private readonly IGameRepository _repository;

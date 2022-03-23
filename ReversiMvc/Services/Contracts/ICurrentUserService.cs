@@ -6,8 +6,13 @@ namespace ReversiMvc.Services.Contracts;
 
 public interface ICurrentUserService
 {
-    public string? UserId { get; }
-    public string? Guid { get; }
-    public string? Name { get; }
-    public IIdentity? Identity { get; }
+    string? UserId { get; }
+    string? Guid { get; }
+    string? Name { get; }
+    IIdentity? Identity { get; }
+
+    bool HasRole(string compareRole);
+
+    bool IsAdmin();
+    bool IsMediator();
 }
