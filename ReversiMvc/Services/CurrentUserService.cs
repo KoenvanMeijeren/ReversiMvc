@@ -17,7 +17,7 @@ public class CurrentUserService : ICurrentUserService
     public string? Name => this._user?.Identity?.Name;
 
     public IIdentity? Identity => this._user?.Identity;
-    
+
     public CurrentUserService(IHttpContextAccessor httpContextAccessor)
     {
         this._user = httpContextAccessor.HttpContext?.User;

@@ -13,13 +13,13 @@ public class AccountController : Controller
     private readonly IRepository<IdentityUser> _repository;
 
     private readonly UserManager<IdentityUser> _userManager;
-    
+
     public AccountController(IRepository<IdentityUser> usersRepository, UserManager<IdentityUser> userManager)
     {
         this._repository = usersRepository;
         this._userManager = userManager;
     }
-    
+
     // GET
     public IActionResult Users()
     {
@@ -34,12 +34,12 @@ public class AccountController : Controller
         {
             return this.NotFound("Deze gebruiker bestaat niet!");
         }
-        
+
         var roles = await this._userManager.GetRolesAsync(user);
 
         return this.View(new ClaimEditViewModel { Guid = guid, Roles = roles });
     }
-    
+
     // POST
     // To protect from overposting attacks, enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -58,9 +58,9 @@ public class AccountController : Controller
         if (roles.Contains(viewModel.Role))
         {
             this.ModelState.AddModelError(string.Empty, "Deze rol is al toegevoegd aan de gebruiker!");
-            return this.View(new ClaimEditViewModel {Guid = viewModel.Guid, Roles = roles});
+            return this.View(new ClaimEditViewModel { Guid = viewModel.Guid, Roles = roles });
         }
-        
+
         var result = await this._userManager.AddToRoleAsync(user, viewModel.Role);
         if (!result.Succeeded)
         {
@@ -69,12 +69,12 @@ public class AccountController : Controller
                 this.ModelState.AddModelError(string.Empty, err.Description);
             }
         }
-        
+
         roles = await this._userManager.GetRolesAsync(user);
-        
-        return this.View(new ClaimEditViewModel {Guid = viewModel.Guid, Roles = roles});
+
+        return this.View(new ClaimEditViewModel { Guid = viewModel.Guid, Roles = roles });
     }
-    
+
     // GET
     public async Task<IActionResult> DeleteRole(string guid, string role)
     {
@@ -85,9 +85,9 @@ public class AccountController : Controller
         {
             return this.RedirectToAction(nameof(this.Roles), new { guid });
         }
-        
+
         await this._userManager.RemoveFromRoleAsync(user, role);
-        
+
         return this.RedirectToAction(nameof(this.Roles), new { guid });
     }
 

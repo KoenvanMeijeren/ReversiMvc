@@ -21,23 +21,23 @@ public class IsAdminHandler : AuthorizationHandlerBase<IAdminAuthorizationRequir
         {
             context.Succeed(requirement);
         }
-        
+
         return Task.CompletedTask;
     }
-    
+
 }
 
 public class IsMediatorHandler : AuthorizationHandlerBase<IMediatorAuthorizationRequirement>
 {
     protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, IMediatorAuthorizationRequirement requirement)
     {
-        if (this.CheckIfUserHasRole(context, ApplicationRoleTypes.Mediator) 
+        if (this.CheckIfUserHasRole(context, ApplicationRoleTypes.Mediator)
             || this.CheckIfUserHasRole(context, ApplicationRoleTypes.Admin))
         {
             context.Succeed(requirement);
         }
-        
+
         return Task.CompletedTask;
     }
-    
+
 }

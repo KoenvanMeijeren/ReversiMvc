@@ -9,6 +9,6 @@ public class UsersRepository : RepositoryDatabaseBase<IdentityUser>
 {
     public UsersRepository(ApplicationDbContext context) : base(context, context.Users)
     {
-        
+
     }
 }

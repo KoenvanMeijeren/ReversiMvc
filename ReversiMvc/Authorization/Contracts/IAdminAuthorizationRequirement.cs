@@ -6,5 +6,5 @@ namespace ReversiMvc.Authorization.Contracts;
 
 public interface IAdminAuthorizationRequirement : IAuthorizationRequirement
 {
-    
+
 }

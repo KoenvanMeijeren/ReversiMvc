@@ -8,13 +8,13 @@ namespace ReversiMvc.Models;
 
 public class ClaimEditViewModel
 {
-    
+
     public string Guid { get; set; }
 
     public IEnumerable<string> Roles { get; set; }
 
     public SelectList roleSelectList => new SelectList(ApplicationRoleTypes.All);
-    
+
     public string Role { get; set; }
-    
+
 }

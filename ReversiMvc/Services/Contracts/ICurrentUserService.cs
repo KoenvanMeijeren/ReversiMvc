@@ -10,7 +10,7 @@ public interface ICurrentUserService
     string? Guid { get; }
     string? Name { get; }
     IIdentity? Identity { get; }
-    
+
     bool HasRole(string compareRole);
 
     bool IsAdmin();

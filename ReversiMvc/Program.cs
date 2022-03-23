@@ -33,7 +33,7 @@ builder.Services.AddAuthorization(options =>
             new IsAllowedToManagePlayerRequirement()
         )
     );
-    
+
     options.AddPolicy("canManageUsers",
         policyBuilder => policyBuilder.AddRequirements(
             new IsAllowedToManageUsersRequirement()
