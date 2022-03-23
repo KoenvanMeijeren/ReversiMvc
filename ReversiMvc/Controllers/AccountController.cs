@@ -12,10 +12,10 @@ namespace ReversiMvc.Controllers;
 public class AccountController : Controller
 {
     private readonly ILogger<AccountController> _logger;
-    
+
     private readonly IRepository<IdentityUser> _repository;
     private readonly IPlayersRepository _playersRepository;
-    
+
     private readonly UserManager<IdentityUser> _userManager;
     private readonly SignInManager<IdentityUser> _signInManager;
     private readonly string _currentUser;
@@ -34,17 +34,17 @@ public class AccountController : Controller
     public IActionResult Index()
     {
         this._logger.LogInformation("User {User} has viewed all accounts", this._currentUser);
-        
+
         return this.View(new UsersViewModel(this._repository.All()));
     }
-    
+
     // GET: Players/Edit/5
     public async Task<IActionResult> ResetPassword(string? guid)
     {
         if (guid == null)
         {
             this._logger.LogInformation("User {User} has tried to reset the password of a non-existing user {User2}", this._currentUser, guid);
-            
+
             return this.NotFound();
         }
 
@@ -52,10 +52,10 @@ public class AccountController : Controller
         if (user == null)
         {
             this._logger.LogInformation("User {User} has tried to reset the password of a non-existing user {User2}", this._currentUser, guid);
-            
+
             return this.NotFound();
         }
-        
+
         this._logger.LogInformation("User {User} tries to reset the password of user {User2}", this._currentUser, user.Id);
 
         return this.View(new EditPasswordViewModel(user));
@@ -87,15 +87,15 @@ public class AccountController : Controller
             {
                 this.ModelState.AddModelError(string.Empty, error.Description);
             }
-            
+
             return this.View(new EditPasswordViewModel(user));
         }
-        
+
         this._logger.LogInformation("User {User} has reset the password of user {User2}", this._currentUser, user.Id);
 
         return this.RedirectToAction(nameof(this.Index));
     }
-    
+
     // GET: Players/Delete/5
     public async Task<IActionResult> Delete(string? guid)
     {
@@ -140,7 +140,7 @@ public class AccountController : Controller
         }
 
         await this._userManager.DeleteAsync(user);
-        
+
         var player = this._playersRepository.Get(id);
         if (player != null)
         {
@@ -158,12 +158,12 @@ public class AccountController : Controller
     public async Task<IActionResult> Roles(string guid)
     {
         this._logger.LogInformation("User {User} has viewed all accounts", this._currentUser);
-        
+
         var user = await this._userManager.FindByIdAsync(guid);
         if (user == null)
         {
             this._logger.LogInformation("User {User} has viewed a non-existing account {Guid}", this._currentUser, guid);
-            
+
             return this.NotFound("Deze gebruiker bestaat niet!");
         }
 
@@ -180,12 +180,12 @@ public class AccountController : Controller
     public async Task<IActionResult> Roles(RoleEditViewModel viewModel)
     {
         this._logger.LogInformation("User {User} has viewed all accounts", this._currentUser);
-        
+
         var user = await this._userManager.FindByIdAsync(viewModel.Guid);
         if (user == null)
         {
             this._logger.LogInformation("User {User} has viewed a non-existing account {Guid}", this._currentUser, viewModel.Guid);
-            
+
             return this.NotFound("Deze gebruiker bestaat niet!");
         }
 
@@ -194,7 +194,7 @@ public class AccountController : Controller
         if (roles.Contains(viewModel.Role))
         {
             this._logger.LogInformation("User {User} has tried to add an already existing role to account {Guid}", this._currentUser, viewModel.Guid);
-            
+
             this.ModelState.AddModelError(string.Empty, "Deze rol is al toegevoegd aan de gebruiker!");
             return this.View(new RoleEditViewModel { Guid = viewModel.Guid, Roles = roles });
         }
@@ -222,12 +222,12 @@ public class AccountController : Controller
         if (!roles.Contains(role))
         {
             this._logger.LogInformation("User {User} has tried to remove a non-existing role to account {Guid}", this._currentUser, guid);
-            
+
             return this.RedirectToAction(nameof(this.Roles), new { guid });
         }
 
         this._logger.LogInformation("User {User} has removed role {Role} to account {Guid}", this._currentUser, role, guid);
-        
+
         await this._userManager.RemoveFromRoleAsync(user, role);
 
         return this.RedirectToAction(nameof(this.Roles), new { guid });

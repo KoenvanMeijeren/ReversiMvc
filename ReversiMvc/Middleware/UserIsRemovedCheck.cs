@@ -20,13 +20,13 @@ public class UserIsRemovedCheck
     {
         var userManager = context.RequestServices.GetRequiredService<UserManager<IdentityUser>>();
         var signInManager = context.RequestServices.GetRequiredService<SignInManager<IdentityUser>>();
-        
+
         var user = await userManager.GetUserAsync(context.User);
         if (user == null)
         {
             await signInManager.SignOutAsync();
         }
-        
+
         await this._next.Invoke(context);
     }
 }

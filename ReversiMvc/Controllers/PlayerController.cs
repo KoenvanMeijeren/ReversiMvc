@@ -138,17 +138,17 @@ public class PlayerController : Controller
         var playerEntity = await this._repository.GetDbSet().FindAsync(id);
 
         await this._repository.DeleteAsync(playerEntity);
-        
+
         var user = await this._userManager.FindByIdAsync(id);
         if (user != null)
         {
             var result = await this._userManager.DeleteAsync(user);
-            
+
             if (!result.Succeeded)
             {
                 throw new InvalidOperationException($"Unexpected error occurred deleting user.");
             }
-        
+
             this._logger.LogInformation("User with ID '{id}' deleted.", id);
         }
 

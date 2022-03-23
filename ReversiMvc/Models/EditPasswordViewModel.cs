@@ -12,12 +12,12 @@ public class EditPasswordViewModel
     public IdentityUser User { get; }
 
     public string Guid { get; set; }
-    
+
     [Required]
     [StringLength(100, ErrorMessage = "Het nieuwe wachtwoord moet minimaal {2} en maximaal {1} karakters lang zijn.", MinimumLength = 6)]
     [DataType(DataType.Password)]
     public string NewPassword { get; set; }
-    
+
     [Required]
     [StringLength(100, ErrorMessage = "Het bevestigingswachtwoord moet minimaal {2} en maximaal {1} karakters lang zijn.", MinimumLength = 6)]
     [DataType(DataType.Password)]
@@ -26,7 +26,7 @@ public class EditPasswordViewModel
 
     public EditPasswordViewModel()
     {
-        
+
     }
 
     public EditPasswordViewModel(IdentityUser user)
@@ -34,5 +34,5 @@ public class EditPasswordViewModel
         this.User = user;
         this.Guid = user.Id;
     }
-    
+
 }
