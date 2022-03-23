@@ -25,6 +25,7 @@
                     {
                         <td>
                             <a asp-controller="Account" asp-action="Roles" asp-route-guid="@user.Id">Beheer rechten</a> |
+                            <a asp-controller="Account" asp-action="ResetPassword" asp-route-guid="@user.Id">Reset wachtwoord</a> |
                             
                             @if (!user.Id.Equals(this._currentUserService.Guid))
                             {
