@@ -11,7 +11,7 @@
             <th>Rechten</th>
             @if (this._currentUserService.IsAdmin())
             {
-                <th></th>
+                <th>Bewerkingen</th>
             }
         </tr>
         </thead>
@@ -24,7 +24,12 @@
                     @if (this._currentUserService.IsAdmin())
                     {
                         <td>
-                            <a asp-controller="Account" asp-action="Roles" asp-route-guid="@user.Id">Beheer rechten</a>
+                            <a asp-controller="Account" asp-action="Roles" asp-route-guid="@user.Id">Beheer rechten</a> |
+                            
+                            @if (!user.Id.Equals(this._currentUserService.Guid))
+                            {
+                                <a asp-controller="Account" asp-action="Delete" asp-route-guid="@user.Id">Verwijderen</a>
+                            }
                         </td>
                     }
                 </tr>

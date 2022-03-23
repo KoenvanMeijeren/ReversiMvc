@@ -149,7 +149,7 @@ public class PlayerController : Controller
                 throw new InvalidOperationException($"Unexpected error occurred deleting user.");
             }
         
-            this._logger.LogInformation("User with ID '{id}' deleted themselves.", id);
+            this._logger.LogInformation("User with ID '{id}' deleted.", id);
         }
 
         this._logger.LogInformation("User {User} has deleted player {Player}", this._currentUser, playerEntity.Guid);
