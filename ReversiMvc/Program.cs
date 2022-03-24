@@ -5,6 +5,7 @@ global using ReversiMvc.Models.Entities;
 global using ReversiMvc.Repository;
 global using ReversiMvc.Repository.Contracts;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Identity;
 using ReversiMvc.Authorization;
 using ReversiMvc.Middleware;
@@ -57,10 +58,28 @@ builder.Services.AddScoped<ICurrentPlayerService, CurrentPlayerService>();
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
+builder.Services.AddCookiePolicy(options =>
+{
+    options.Secure = CookieSecurePolicy.Always;
+    options.HttpOnly = HttpOnlyPolicy.Always;
+    options.MinimumSameSitePolicy = SameSiteMode.Strict;
+});
+
+builder.Services.AddSession(options =>
+{
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+    options.Cookie.HttpOnly = true;
+    options.Cookie.SameSite = SameSiteMode.Strict;
+    options.Cookie.MaxAge = TimeSpan.FromDays(7);
+});
+
 var app = builder.Build();
 
+// Add important headers to response.
+app.UseMiddleware<ResponseHeaders>();
+
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (!app.Environment.IsDevelopment())
 {
     app.UseMigrationsEndPoint();
 }
