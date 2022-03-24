@@ -19,6 +19,11 @@ public class PlayerEntity : IEntity
 
     public int Draws { get; set; }
 
+    public PlayerEntity()
+    {
+
+    }
+
     public PlayerEntity(string guid = "", string name = "")
     {
         this.Guid = guid;
