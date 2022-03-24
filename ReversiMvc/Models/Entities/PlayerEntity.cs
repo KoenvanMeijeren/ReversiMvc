@@ -21,9 +21,9 @@ public class PlayerEntity : IEntity
 
     public PlayerEntity()
     {
-        
+
     }
-    
+
     public PlayerEntity(string guid = "", string name = "")
     {
         this.Guid = guid;

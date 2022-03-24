@@ -17,12 +17,12 @@ public class ResponseHeaders
     public async Task Invoke(HttpContext context)
     {
         var headers = context.Response.Headers;
-        
+
         // Security settings.
         headers.XXSSProtection = "1; mode=block";
         headers.XFrameOptions = "DENY";
         headers.Referer = "no-referrer";
-        
+
         // General settings.
         headers.CacheControl = "no-cache, no-store, must-revalidate";
         headers.XContentTypeOptions = "nosniff";
@@ -30,7 +30,7 @@ public class ResponseHeaders
         {
             headers.XContentTypeOptions = "nosniff";
         }
-        
+
         await this._next.Invoke(context);
     }
 }
