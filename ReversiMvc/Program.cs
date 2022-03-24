@@ -7,6 +7,7 @@ global using ReversiMvc.Repository.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using ReversiMvc.Authorization;
+using ReversiMvc.Middleware;
 using ReversiMvc.Security;
 using ReversiMvc.Services;
 using ReversiMvc.Services.Contracts;
@@ -82,5 +83,7 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
+
+app.UseMiddleware<UserIsRemovedCheck>();
 
 app.Run();

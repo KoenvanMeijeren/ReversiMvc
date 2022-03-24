@@ -1,14 +1,12 @@
+@using ReversiMvc.Services.Contracts
 @model IEnumerable<ReversiMvc.Models.Entities.PlayerEntity>
+@inject ICurrentUserService _currentUserService
 
 @{
     ViewData["Title"] = "Spelers";
 }
 
 <h1>@ViewData["Title"]</h1>
-
-<p>
-    <a asp-action="Create">Speler toevoegen</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -29,7 +27,11 @@
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Guid">Bewerken</a> |
                 <a asp-action="Details" asp-route-id="@item.Guid">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Guid">Verwijderen</a>
+                
+                @if (!item.Guid.Equals(this._currentUserService.Guid))
+                {
+                    <a asp-action="Delete" asp-route-id="@item.Guid">Verwijderen</a>
+                }
             </td>
         </tr>
 }
