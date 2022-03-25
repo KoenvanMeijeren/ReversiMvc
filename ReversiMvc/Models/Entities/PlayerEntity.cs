@@ -19,7 +19,7 @@ public class PlayerEntity : IEntity
 
     public int Draws { get; set; }
 
-    public PlayerEntity()
+    public PlayerEntity() : this(string.Empty, string.Empty)
     {
 
     }
