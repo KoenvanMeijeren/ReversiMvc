@@ -367,3 +367,4 @@ FodyWeavers.xsd
 
 ReversiMvc/app.db-shm
 ReversiMvc/app.db-wal
+ReversiMvc/wwwroot/dist
