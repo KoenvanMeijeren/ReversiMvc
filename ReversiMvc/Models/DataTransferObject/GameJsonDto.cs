@@ -1,4 +1,6 @@
-﻿namespace ReversiMvc.Models.DataTransferObject;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ReversiMvc.Models.DataTransferObject;
 
 public enum Color
 {
@@ -21,6 +23,7 @@ public class GameJsonDto : IEntity
 {
     public int Id { get; set; }
 
+    [Required]
     public string? Description { get; set; }
 
     public string? Token { get; set; }
