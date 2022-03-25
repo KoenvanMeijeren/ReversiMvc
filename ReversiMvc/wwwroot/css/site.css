@@ -1,20 +1,23 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
   html {
-    font-size: 16px;
+      font-size: 16px;
   }
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    height: 100%;
+    margin-bottom: 60px;
+    display: flex;
+    flex-direction: column;
 }
 
 form button[type="submit"] {
@@ -23,4 +26,13 @@ form button[type="submit"] {
 
 .mw-50 {
     max-width: 50%;
+}
+
+.container {
+    flex: 1 0 auto;
+}
+
+.footer {
+    flex-shrink: 0;
+    height: 50px;
 }
