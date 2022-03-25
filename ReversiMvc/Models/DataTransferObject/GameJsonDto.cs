@@ -23,7 +23,7 @@ public class GameJsonDto : IEntity
 {
     public int Id { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = "Het beschrijvingsveld is verplicht!")]
     public string? Description { get; set; }
 
     public string? Token { get; set; }
