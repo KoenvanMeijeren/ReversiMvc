@@ -34,7 +34,13 @@ public class GameController : Controller
 
         this._logger.LogInformation("Player {User} has viewed all games", this._currentUser);
 
-        var entities = from game in await this._repository.AllAsync() select new GameEditViewModel(game, this._currentPlayer);
+        var games = await this._repository.AllAsync();
+        if (games == null)
+        {
+            return this.View();
+        }
+
+        var entities = from game in games select new GameEditViewModel(game, this._currentPlayer);
 
         return this.View(entities);
     }

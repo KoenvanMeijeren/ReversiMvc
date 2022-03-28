@@ -1,54 +1,73 @@
 @model ReversiMvc.Models.GameEditViewModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Reversi";
 }
 
-<h1>Details</h1>
-
-<div>
-    <h4>Spel</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">Beschrijving</dt>
-        <dd class = "col-sm-10">@Model.Description</dd>
+<div class="row">
+    <div class="col-md-2">
+        <h1>Reversi</h1>
+        <p>@Html.DisplayFor(model => model.Description)</p>
         
-        <dt class = "col-sm-2">Sleutel</dt>
-        <dd class = "col-sm-10">@Model.Token</dd>
-        
-        <dt class = "col-sm-2">Speler 1</dt>
-        <dd class = "col-sm-10">@Model.PlayerOne?.Name</dd>
-        
-        <dt class = "col-sm-2">Speler 2</dt>
-        <dd class = "col-sm-10">@Model.PlayerTwo?.Name</dd>
-        
-        <dt class = "col-sm-2">Status</dt>
-        <dd class = "col-sm-10">@Model.Status</dd>
-    </dl>
-    
-    <div class="row">
-        <div class="col-md-6">
-            @if (Model.CanAddPlayerTwo())
+        <div class = "col-sm-2 fw-bold">
+            Status
+        </div>
+        <div class = "col-sm-10">
+            @if (!Model.IsPlayingOrEnded())
             {
-                <a href="@Url.Action("AddPlayerTwo", new { token = Model.Token })" class="btn btn-primary">Deelnemen</a>
+                <p>Wachten op start</p>
             }
-            
-            @if (Model.CanStart())
-            {
-                <a href="@Url.Action("Start", new { token = Model.Token })" class="btn btn-primary">Starten</a>
+            else if (Model.IsPlaying()) {
+                <p>Spelen</p>
             }
-            
-            @if (Model.CanQuit())
+            else if (Model.IsQuit())
             {
-                <a href="@Url.Action("Quit", new { token = Model.Token })" class="btn btn-primary">Stoppen</a>
+                <p>Gestopt</p>
+            }
+            else if (Model.IsFinished())
+            {
+                <p>Beëindigd</p>
             }
         </div>
     </div>
-    
-    <hr />
-    <div class="row game" data-game-token="@Model.Token">
-        <div class="col-md-12">
+
+    @if (Model.IsPlayingOrEnded())
+    {
+        <div class="col-md-8 game" data-game-token="@Model.Token" data-game-player="@Model.LoggedInPlayer.Guid">
             <div id="game-play-@Model.Token"></div>
         </div>
+    }
+    else
+    {
+        <div class="col-md-8">
+            @if (Model.IsPending()) {
+                if (Model.IsCurrentPlayerOwner()) {
+                    <h2 class="text-success">Wachten op het starten van het spel...</h2>
+                }
+                else {
+                    <h2 class="text-success">Tegenstander is het spel aan het starten...</h2>
+                }
+            }
+            else {
+                <h2 class="text-warning">Aan het wachten op een tegenstander...</h2>
+            }
+        </div>
+    }
+
+    <div class="col-md-2">
+        @if (Model.CanAddPlayerTwo())
+        {
+            <a href="@Url.Action("AddPlayerTwo", new { token = Model.Token })" class="btn btn-primary">Deelnemen</a>
+        }
+        
+        @if (Model.CanStart())
+        {
+            <a href="@Url.Action("Start", new { token = Model.Token })" class="btn btn-primary">Starten</a>
+        }
+        
+        @if (Model.CanQuit())
+        {
+            <a href="@Url.Action("Quit", new { token = Model.Token })" class="btn btn-primary">Stoppen</a>
+        }
     </div>
 </div>
