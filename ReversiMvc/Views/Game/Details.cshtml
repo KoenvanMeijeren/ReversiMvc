@@ -31,15 +31,9 @@
         </div>
     </div>
 
-    @if (Model.IsPlayingOrEnded())
-    {
-        <div class="col-md-8 game" data-game-token="@Model.Token" data-game-player="@Model.LoggedInPlayer.Guid">
-            <div id="game-play-@Model.Token"></div>
-        </div>
-    }
-    else
-    {
-        <div class="col-md-8">
+    <div class="col-md-8">
+        @if (!Model.IsPlayingOrEnded())
+        {
             @if (Model.IsPending()) {
                 if (Model.IsCurrentPlayerOwner()) {
                     <h2 class="text-success">Wachten op het starten van het spel...</h2>
@@ -51,8 +45,12 @@
             else {
                 <h2 class="text-warning">Aan het wachten op een tegenstander...</h2>
             }
+        }
+
+        <div class="game w-100" data-game-token="@Model.Token" data-game-player="@Model.LoggedInPlayer.Guid">
+            <div id="game-play-@Model.Token"></div>
         </div>
-    }
+    </div>
 
     <div class="col-md-2">
         @if (Model.CanAddPlayerTwo())
