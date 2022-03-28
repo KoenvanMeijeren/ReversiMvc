@@ -15,7 +15,10 @@
         <div class = "col-sm-10">
             @if (!Model.IsPlayingOrEnded())
             {
-                <p>Wachten op tegenstander</p>
+                <p>Wachten op start</p>
+            }
+            else if (Model.IsPlaying()) {
+                <p>Spelen</p>
             }
             else if (Model.IsQuit())
             {
@@ -30,14 +33,24 @@
 
     @if (Model.IsPlayingOrEnded())
     {
-        <div class="col-md-8 game" data-game-token="@Model.Token" data-game-player="@Model.PlayerOne?.Token">
+        <div class="col-md-8 game" data-game-token="@Model.Token" data-game-player="@Model.LoggedInPlayer.Guid">
             <div id="game-play-@Model.Token"></div>
         </div>
     }
     else
     {
         <div class="col-md-8">
-            <h2 class="text-warning">Aan het wachten op een tegenstander...</h2>
+            @if (Model.IsPending()) {
+                if (Model.IsCurrentPlayerOwner()) {
+                    <h2 class="text-success">Wachten op het starten van het spel...</h2>
+                }
+                else {
+                    <h2 class="text-success">Tegenstander is het spel aan het starten...</h2>
+                }
+            }
+            else {
+                <h2 class="text-warning">Aan het wachten op een tegenstander...</h2>
+            }
         </div>
     }
 

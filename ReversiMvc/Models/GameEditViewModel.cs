@@ -9,7 +9,6 @@ public class GameEditViewModel
 {
 
     private readonly GameJsonDto? _gameJsonDto;
-    private readonly PlayerEntity? _currentPlayer;
 
     public int? Id => this._gameJsonDto?.Id;
     public string? Description => this._gameJsonDto?.Description;
@@ -17,6 +16,7 @@ public class GameEditViewModel
     public PlayerDto PlayerOne => new PlayerDto(this._gameJsonDto?.PlayerOne);
     public PlayerDto PlayerTwo => new PlayerDto(this._gameJsonDto?.PlayerTwo);
     public PlayerDto CurrentPlayer => new PlayerDto(this._gameJsonDto?.CurrentPlayer);
+    public PlayerEntity LoggedInPlayer { get; }
 
     public Color[,] Board
     {
@@ -50,27 +50,27 @@ public class GameEditViewModel
     public GameEditViewModel(GameJsonDto? gameJsonDto = null, PlayerEntity currentPlayer = null)
     {
         this._gameJsonDto = gameJsonDto;
-        this._currentPlayer = currentPlayer;
+        this.LoggedInPlayer = currentPlayer;
     }
 
     public bool CanAddPlayerOne()
     {
-        if (this._currentPlayer is not { Guid: { } })
+        if (this.LoggedInPlayer is not { Guid: { } })
         {
             return false;
         }
 
-        return this.PlayerOne.Token == null && !this._currentPlayer.Guid.Equals(this.PlayerTwo.Token);
+        return this.PlayerOne.Token == null && !this.LoggedInPlayer.Guid.Equals(this.PlayerTwo.Token);
     }
 
     public bool CanAddPlayerTwo()
     {
-        if (this._currentPlayer is not { Guid: { } })
+        if (this.LoggedInPlayer is not { Guid: { } })
         {
             return false;
         }
 
-        return this.PlayerTwo.Token == null && !this._currentPlayer.Guid.Equals(this.PlayerOne.Token);
+        return this.PlayerTwo.Token == null && !this.LoggedInPlayer.Guid.Equals(this.PlayerOne.Token);
     }
 
     public bool CanStart()
@@ -81,20 +81,31 @@ public class GameEditViewModel
         }
 
         return this.Status.Equals(Status.Pending)
-               && this._currentPlayer is { Guid: { } }
-               && this._currentPlayer.Guid.Equals(this.PlayerOne.Token);
+               && this.LoggedInPlayer is { Guid: { } }
+               && this.LoggedInPlayer.Guid.Equals(this.PlayerOne.Token);
     }
 
     public bool CanQuit()
     {
-        if (this._currentPlayer is not { Guid: { } })
+        if (this.LoggedInPlayer is not { Guid: { } })
         {
             return false;
         }
 
         return this.Status.Equals(Status.Playing)
-               && (this._currentPlayer.Guid.Equals(this.PlayerOne.Token)
-                   || this._currentPlayer.Guid.Equals(this.PlayerTwo.Token));
+               && (this.LoggedInPlayer.Guid.Equals(this.PlayerOne.Token)
+                   || this.LoggedInPlayer.Guid.Equals(this.PlayerTwo.Token));
+    }
+
+    public bool IsCurrentPlayerOwner() 
+    {
+        return this.LoggedInPlayer is { Guid: { } }
+               && this.LoggedInPlayer.Guid.Equals(this.PlayerOne.Token);
+    }
+
+    public bool IsPending()
+    {
+        return this.Status.Equals(Status.Pending);
     }
 
     public bool IsPlaying()
