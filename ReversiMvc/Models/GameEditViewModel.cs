@@ -97,7 +97,7 @@ public class GameEditViewModel
                    || this.LoggedInPlayer.Guid.Equals(this.PlayerTwo.Token));
     }
 
-    public bool IsCurrentPlayerOwner() 
+    public bool IsCurrentPlayerOwner()
     {
         return this.LoggedInPlayer is { Guid: { } }
                && this.LoggedInPlayer.Guid.Equals(this.PlayerOne.Token);
@@ -117,7 +117,7 @@ public class GameEditViewModel
     {
         return this.Status.Equals(Status.Quit);
     }
-    
+
     public bool IsFinished()
     {
         return this.Status.Equals(Status.Finished);
@@ -128,5 +128,5 @@ public class GameEditViewModel
     {
         return this.IsPlaying() || this.IsQuit() || this.IsFinished();
     }
-    
+
 }
