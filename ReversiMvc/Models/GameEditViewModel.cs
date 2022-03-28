@@ -97,4 +97,25 @@ public class GameEditViewModel
                    || this._currentPlayer.Guid.Equals(this.PlayerTwo.Token));
     }
 
+    public bool IsPlaying()
+    {
+        return this.Status.Equals(Status.Playing);
+    }
+
+    public bool IsQuit()
+    {
+        return this.Status.Equals(Status.Quit);
+    }
+    
+    public bool IsFinished()
+    {
+        return this.Status.Equals(Status.Finished);
+    }
+
+
+    public bool IsPlayingOrEnded()
+    {
+        return this.IsPlaying() || this.IsQuit() || this.IsFinished();
+    }
+    
 }
