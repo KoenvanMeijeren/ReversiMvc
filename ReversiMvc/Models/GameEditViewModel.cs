@@ -67,6 +67,11 @@ public class GameEditViewModel
         {
             this.Opponent = this.PlayerTwo.Name;
         }
+
+        if (!this.Status.Equals(Status.Finished) && !this.Status.Equals(Status.Quit))
+        {
+            return;
+        }
         
         if (Color.White.ToString().Equals(gameJsonDto.PredominantColor))
         {
