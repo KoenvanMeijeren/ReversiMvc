@@ -17,6 +17,8 @@ public class GameEditViewModel
     public PlayerDto PlayerTwo => new PlayerDto(this._gameJsonDto?.PlayerTwo);
     public PlayerDto CurrentPlayer => new PlayerDto(this._gameJsonDto?.CurrentPlayer);
     public PlayerEntity LoggedInPlayer { get; }
+    public PlayerDto DominantPlayerDto { get; }
+    public PlayerDto LoserPlayerDto { get; }
 
     public string? Opponent { get; }
     public string? PredominantColor { get; }
@@ -51,17 +53,17 @@ public class GameEditViewModel
 
     }
 
-    public GameEditViewModel(GameJsonDto? gameJsonDto = null, PlayerEntity loggedInPlayer = null)
+    public GameEditViewModel(GameJsonDto? gameJsonDto = null, PlayerEntity? loggedInPlayer = null)
     {
         this._gameJsonDto = gameJsonDto;
-        this.LoggedInPlayer = loggedInPlayer;
         this.PredominantColor = gameJsonDto?.PredominantColor;
         this.PredominantPlayer = "-";
-        if (gameJsonDto == null)
+        if (gameJsonDto == null || loggedInPlayer == null)
         {
             return;
         }
 
+        this.LoggedInPlayer = loggedInPlayer;
         this.Opponent = this.PlayerOne.Name;
         if (!loggedInPlayer.Guid.Equals(this.PlayerTwo.Token))
         {
@@ -80,6 +82,9 @@ public class GameEditViewModel
             {
                 this.PredominantPlayer = "Ik";
             }
+
+            this.DominantPlayerDto = this.PlayerOne;
+            this.LoserPlayerDto = this.PlayerTwo;
         }
         else if (Color.Black.ToString().Equals(gameJsonDto.PredominantColor))
         {
@@ -88,6 +93,9 @@ public class GameEditViewModel
             {
                 this.PredominantPlayer = "Ik";
             }
+            
+            this.DominantPlayerDto = this.PlayerTwo;
+            this.LoserPlayerDto = this.PlayerOne;
         }
     }
 
@@ -135,7 +143,7 @@ public class GameEditViewModel
                    || this.LoggedInPlayer.Guid.Equals(this.PlayerTwo.Token));
     }
 
-    public bool IsCurrentPlayerOwner()
+    public bool IsLoggedInPlayerOwner()
     {
         return this.LoggedInPlayer is { Guid: { } }
                && this.LoggedInPlayer.Guid.Equals(this.PlayerOne.Token);

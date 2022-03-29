@@ -68,7 +68,7 @@
         @if (!Model.IsPlayingOrEnded())
         {
             @if (Model.IsPending()) {
-                if (Model.IsCurrentPlayerOwner()) {
+                if (Model.IsLoggedInPlayerOwner()) {
                     <h2 class="text-success">Wachten op het starten van het spel...</h2>
                 }
                 else {
