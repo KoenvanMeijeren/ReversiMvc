@@ -1,4 +1,6 @@
-﻿namespace ReversiMvc.Repository;
+﻿using ReversiMvc.Models.DataTransferObject;
+
+namespace ReversiMvc.Repository;
 
 /// <summary>
 /// Provides a repository for the game.
@@ -44,4 +46,30 @@ public class PlayersRepository : RepositoryDatabaseBase<PlayerEntity>, IPlayersR
     {
         return this._players;
     }
+
+    /// <inheritdoc />
+    public void UpdatePlayerScores(string dominantColor, PlayerEntity playerOne, PlayerEntity playerTwo)
+    {
+        if (Color.None.ToString().Equals(dominantColor))
+        {
+            playerOne.Draws++;
+            playerTwo.Draws++;
+        }
+        else if (Color.White.ToString().Equals(dominantColor))
+        {
+            playerOne.Victories++;
+            playerTwo.Losses++;
+        } 
+        else if (Color.Black.ToString().Equals(dominantColor))
+        {
+            playerOne.Losses++;
+            playerTwo.Victories++;
+        }
+
+        this.Context.Entry(playerOne).State = EntityState.Modified;
+        this.Context.Entry(playerTwo).State = EntityState.Modified;
+
+        this.Context.SaveChanges();
+    }
+
 }
