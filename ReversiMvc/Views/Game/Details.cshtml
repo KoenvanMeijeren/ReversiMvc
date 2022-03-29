@@ -17,10 +17,10 @@
             @Model.Opponent
         </div>
         
-        <div class = "col-sm-4 fw-bold">
+        <div class="fw-bold">
             Dominante kleur
         </div>
-        <div class = "col-sm-8">
+        <div>
             @if ("White".Equals(Model.PredominantColor))
             {
                 <div>Wit</div>
@@ -35,17 +35,17 @@
             }
         </div>
         
-        <div class = "col-sm-4 fw-bold">
+        <div class="fw-bold">
             Winnaar
         </div>
-        <div class = "col-sm-8">
+        <div>
             @Model.PredominantPlayer
         </div>
         
-        <div class = "col-sm-4 fw-bold">
+        <div class="fw-bold">
             Status
         </div>
-        <div class = "col-sm-8">
+        <div>
             @if (!Model.IsPlayingOrEnded())
             {
                 <p>Wachten op start</p>
