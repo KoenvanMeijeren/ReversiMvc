@@ -54,6 +54,7 @@ builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 builder.Services.AddScoped<IGameRepository, GameRepository>();
 builder.Services.AddScoped<IPlayersRepository, PlayersRepository>();
 builder.Services.AddScoped<IRepository<IdentityUser>, UsersRepository>();
+builder.Services.AddScoped<IRepository<GameScoreEntity>, GameScoreRepository>();
 builder.Services.AddScoped<ICurrentPlayerService, CurrentPlayerService>();
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();

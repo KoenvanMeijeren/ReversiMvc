@@ -42,7 +42,7 @@ public class GameController : Controller
 
         var entities = from game in games select new GameEditViewModel(game, this._currentPlayer);
 
-        return this.View(entities);
+        return this.View(new GameOverviewViewModel(entities, this._currentPlayer));
     }
 
     // GET: Game/Create

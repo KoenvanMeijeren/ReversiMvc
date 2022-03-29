@@ -8,6 +8,8 @@ namespace ReversiMvc.Models;
 public class GameEditViewModel
 {
 
+    public const string UndefinedValue = "-";
+
     private readonly GameJsonDto? _gameJsonDto;
 
     public int? Id => this._gameJsonDto?.Id;
@@ -17,6 +19,11 @@ public class GameEditViewModel
     public PlayerDto PlayerTwo => new PlayerDto(this._gameJsonDto?.PlayerTwo);
     public PlayerDto CurrentPlayer => new PlayerDto(this._gameJsonDto?.CurrentPlayer);
     public PlayerEntity LoggedInPlayer { get; }
+    public PlayerDto DominantPlayerDto { get; }
+    public PlayerDto LoserPlayerDto { get; }
+    public string? Opponent { get; }
+    public string? PredominantColor { get; }
+    public string? PredominantPlayer { get; }
 
     public Color[,] Board
     {
@@ -47,10 +54,50 @@ public class GameEditViewModel
 
     }
 
-    public GameEditViewModel(GameJsonDto? gameJsonDto = null, PlayerEntity currentPlayer = null)
+    public GameEditViewModel(GameJsonDto? gameJsonDto = null, PlayerEntity? loggedInPlayer = null)
     {
         this._gameJsonDto = gameJsonDto;
-        this.LoggedInPlayer = currentPlayer;
+        this.PredominantColor = gameJsonDto?.PredominantColor;
+        this.PredominantPlayer = UndefinedValue;
+        if (gameJsonDto == null || loggedInPlayer == null)
+        {
+            return;
+        }
+
+        this.LoggedInPlayer = loggedInPlayer;
+        this.Opponent = this.PlayerOne.Name;
+        if (!loggedInPlayer.Guid.Equals(this.PlayerTwo.Token))
+        {
+            this.Opponent = this.PlayerTwo.Name;
+        }
+
+        if (!this.Status.Equals(Status.Finished) && !this.Status.Equals(Status.Quit))
+        {
+            return;
+        }
+
+        if (Color.White.ToString().Equals(gameJsonDto.PredominantColor))
+        {
+            this.PredominantPlayer = "Tegenstander";
+            if (this.LoggedInPlayer.Guid.Equals(this.PlayerOne.Token))
+            {
+                this.PredominantPlayer = "Ik";
+            }
+
+            this.DominantPlayerDto = this.PlayerOne;
+            this.LoserPlayerDto = this.PlayerTwo;
+        }
+        else if (Color.Black.ToString().Equals(gameJsonDto.PredominantColor))
+        {
+            this.PredominantPlayer = "Tegenstander";
+            if (this.LoggedInPlayer.Guid.Equals(this.PlayerTwo.Token))
+            {
+                this.PredominantPlayer = "Ik";
+            }
+
+            this.DominantPlayerDto = this.PlayerTwo;
+            this.LoserPlayerDto = this.PlayerOne;
+        }
     }
 
     public bool CanAddPlayerOne()
@@ -97,7 +144,7 @@ public class GameEditViewModel
                    || this.LoggedInPlayer.Guid.Equals(this.PlayerTwo.Token));
     }
 
-    public bool IsCurrentPlayerOwner()
+    public bool IsLoggedInPlayerOwner()
     {
         return this.LoggedInPlayer is { Guid: { } }
                && this.LoggedInPlayer.Guid.Equals(this.PlayerOne.Token);

@@ -1,8 +1,21 @@
-@model IEnumerable<GameEditViewModel>?
+@model GameOverviewViewModel
 
 @{
     ViewData["Title"] = "Spellen";
 }
+
+<h1>Speler statistieken</h1>
+<div class="row">
+    <div class="col-md-4">
+        Aantal verliezen: @Model.LoggedInPlayer.Losses
+    </div>
+    <div class="col-md-4">
+        Aantal gelijkspellen: @Model.LoggedInPlayer.Draws
+    </div>
+    <div class="col-md-4">
+        Aantal overwinningen: @Model.LoggedInPlayer.Victories
+    </div>
+</div>
 
 <h1>@ViewData["Title"]</h1>
 
@@ -15,21 +28,36 @@
             <th>Beschrijving</th>
             <th>Speler 1</th>
             <th>Speler 2</th>
-            <th>Huidige speler</th>
+            <th>Dominante kleur</th>
+            <th>Winnaar</th>
             <th>Status</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-    @if (Model != null && Model.Any())
+    @if (Model.Games != null && Model.Games.Any())
     {
-        @foreach (var item in Model)
+        @foreach (var item in Model.Games)
         {
             <tr>
                 <td>@Html.DisplayFor(modelItem => item.Description)</td>
                 <td>@Html.DisplayFor(modelItem => item.PlayerOne.Name)</td>
                 <td>@Html.DisplayFor(modelItem => item.PlayerTwo.Name)</td>
-                <td>@Html.DisplayFor(modelItem => item.CurrentPlayer.Name)</td>
+                <td>
+                    @if ("White".Equals(item.PredominantColor))
+                    {
+                        <div>Wit</div>
+                    }
+                    else if ("Black".Equals(item.PredominantColor))
+                    {
+                        <div>Zwart</div>
+                    }
+                    else
+                    {
+                        <div>Geen</div>
+                    }
+                </td>
+                <td>@Html.DisplayFor(modelItem => item.PredominantPlayer)</td>
                 <td>@Html.DisplayFor(modelItem => item.Status)</td>
 
                 <td>

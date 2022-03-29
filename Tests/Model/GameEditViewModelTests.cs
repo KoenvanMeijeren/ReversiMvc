@@ -154,6 +154,7 @@ public class GameEditViewModelTests
 
         // Assert
         Assert.IsTrue(viewModel.CanStart());
+        Assert.IsFalse(viewModel.IsPlaying());
     }
 
     [Test]
@@ -179,9 +180,13 @@ public class GameEditViewModelTests
 
         // Assert
         Assert.IsFalse(viewModel.CanStart());
+        Assert.IsFalse(viewModel.IsPlaying());
         Assert.IsFalse(viewModel1.CanStart());
+        Assert.IsFalse(viewModel1.IsPlaying());
         Assert.IsFalse(viewModel2.CanStart());
+        Assert.IsFalse(viewModel2.IsPlaying());
         Assert.IsFalse(viewModel3.CanStart());
+        Assert.IsFalse(viewModel3.IsPlaying());
     }
 
     [Test]
@@ -199,6 +204,7 @@ public class GameEditViewModelTests
 
         // Assert
         Assert.IsTrue(viewModel.CanQuit());
+        Assert.IsFalse(viewModel.IsQuit());
     }
 
     [Test]
@@ -227,8 +233,241 @@ public class GameEditViewModelTests
 
         // Assert
         Assert.IsFalse(viewModel.CanQuit());
+        Assert.IsFalse(viewModel.IsQuit());
         Assert.IsFalse(viewModel1.CanQuit());
+        Assert.IsTrue(viewModel1.IsQuit());
         Assert.IsFalse(viewModel2.CanQuit());
+        Assert.IsFalse(viewModel2.IsQuit());
         Assert.IsFalse(viewModel3.CanQuit());
+        Assert.IsFalse(viewModel3.IsQuit());
+    }
+
+    [Test]
+    public void IsPending()
+    {
+        // Arrange
+        var viewModel = new GameEditViewModel(new GameJsonDto()
+        {
+            Status = "pending",
+        });
+        var viewModel1 = new GameEditViewModel(new GameJsonDto()
+        {
+            Status = "playing",
+        });
+
+        // Act
+
+        // Assert
+        Assert.IsTrue(viewModel.IsPending());
+        Assert.IsFalse(viewModel1.IsPending());
+    }
+
+    [Test]
+    public void IsFinished()
+    {
+        // Arrange
+        var viewModel = new GameEditViewModel(new GameJsonDto()
+        {
+            Status = "finished",
+        });
+        var viewModel1 = new GameEditViewModel(new GameJsonDto()
+        {
+            Status = "playing",
+        });
+
+        // Act
+
+        // Assert
+        Assert.IsTrue(viewModel.IsFinished());
+        Assert.IsFalse(viewModel1.IsFinished());
+    }
+
+    [Test]
+    public void IsPlayingOrEnded()
+    {
+        // Arrange
+        var viewModel = new GameEditViewModel(new GameJsonDto()
+        {
+            Status = "finished",
+        });
+        var viewModel1 = new GameEditViewModel(new GameJsonDto()
+        {
+            Status = "playing",
+        });
+        var viewModel2 = new GameEditViewModel(new GameJsonDto()
+        {
+            Status = "quit",
+        });
+        var viewModel3 = new GameEditViewModel(new GameJsonDto()
+        {
+            Status = "created",
+        });
+
+        // Act
+
+        // Assert
+        Assert.IsTrue(viewModel.IsPlayingOrEnded());
+        Assert.IsTrue(viewModel1.IsPlayingOrEnded());
+        Assert.IsTrue(viewModel2.IsPlayingOrEnded());
+        Assert.IsFalse(viewModel3.IsPlayingOrEnded());
+    }
+
+    [Test]
+    public void IsLoggedInPlayerOwner()
+    {
+        // Arrange
+        var playerOne = new PlayerJsonDto() { Color = "White", Name = "Teddy", Token = "qwerty" };
+        var playerTwo = new PlayerJsonDto() { Color = "Black", Name = "Jessica", Token = "zxcvb" };
+
+        var viewModel = new GameEditViewModel(new GameJsonDto()
+        {
+            PlayerOne = playerOne,
+            PlayerTwo = playerTwo
+        }, new PlayerEntity(playerOne.Token));
+        var viewModel1 = new GameEditViewModel(new GameJsonDto()
+        {
+            PlayerOne = playerOne,
+            PlayerTwo = playerTwo
+        }, new PlayerEntity(playerTwo.Token));
+
+        // Act
+
+        // Assert
+        Assert.IsTrue(viewModel.IsLoggedInPlayerOwner());
+        Assert.IsFalse(viewModel1.IsLoggedInPlayerOwner());
+    }
+
+    [Test]
+    public void PlayerOne_LoggedIn_PlayerTwoIsOpponent()
+    {
+        // Arrange
+        var playerOne = new PlayerJsonDto() { Color = "White", Name = "Teddy", Token = "qwerty" };
+        var playerTwo = new PlayerJsonDto() { Color = "Black", Name = "Jessica", Token = "zxcvb" };
+
+        var viewModel = new GameEditViewModel(new GameJsonDto()
+        {
+            PlayerOne = playerOne,
+            PlayerTwo = playerTwo
+        }, new PlayerEntity(playerOne.Token, playerOne.Name));
+
+        // Act
+
+        // Assert
+        Assert.AreEqual(playerTwo.Name, viewModel.Opponent);
+    }
+
+    [Test]
+    public void PlayerTwo_LoggedIn_PlayerOneIsOpponent()
+    {
+        // Arrange
+        var playerOne = new PlayerJsonDto() { Color = "White", Name = "Teddy", Token = "qwerty" };
+        var playerTwo = new PlayerJsonDto() { Color = "Black", Name = "Jessica", Token = "zxcvb" };
+
+        var viewModel = new GameEditViewModel(new GameJsonDto()
+        {
+            PlayerOne = playerOne,
+            PlayerTwo = playerTwo
+        }, new PlayerEntity(playerTwo.Token, playerTwo.Name));
+
+        // Act
+
+        // Assert
+        Assert.AreEqual(playerOne.Name, viewModel.Opponent);
+    }
+
+    [Test]
+    public void PlayerOne_Dominant_LoggedIn()
+    {
+        // Arrange
+        var playerOne = new PlayerJsonDto() { Color = "White", Name = "Teddy", Token = "qwerty" };
+        var playerTwo = new PlayerJsonDto() { Color = "Black", Name = "Jessica", Token = "zxcvb" };
+
+        var viewModel = new GameEditViewModel(new GameJsonDto()
+        {
+            PlayerOne = playerOne,
+            PlayerTwo = playerTwo,
+            Status = "finished",
+            PredominantColor = "White"
+        }, new PlayerEntity(playerOne.Token, playerOne.Name));
+
+        // Act
+
+        // Assert
+        Assert.AreEqual("White", viewModel.PredominantColor);
+        Assert.AreEqual("Ik", viewModel.PredominantPlayer);
+        Assert.AreEqual("Teddy", viewModel.DominantPlayerDto.Name);
+        Assert.AreEqual("Jessica", viewModel.LoserPlayerDto.Name);
+    }
+
+    [Test]
+    public void PlayerOne_Dominant_NotLoggedIn()
+    {
+        // Arrange
+        var playerOne = new PlayerJsonDto() { Color = "White", Name = "Teddy", Token = "qwerty" };
+        var playerTwo = new PlayerJsonDto() { Color = "Black", Name = "Jessica", Token = "zxcvb" };
+
+        var viewModel = new GameEditViewModel(new GameJsonDto()
+        {
+            PlayerOne = playerOne,
+            PlayerTwo = playerTwo,
+            Status = "finished",
+            PredominantColor = "White"
+        }, new PlayerEntity(playerTwo.Token, playerTwo.Name));
+
+        // Act
+
+        // Assert
+        Assert.AreEqual("White", viewModel.PredominantColor);
+        Assert.AreEqual("Tegenstander", viewModel.PredominantPlayer);
+        Assert.AreEqual("Teddy", viewModel.DominantPlayerDto.Name);
+        Assert.AreEqual("Jessica", viewModel.LoserPlayerDto.Name);
+    }
+
+    [Test]
+    public void PlayerTwo_Dominant_LoggedIn()
+    {
+        // Arrange
+        var playerOne = new PlayerJsonDto() { Color = "White", Name = "Teddy", Token = "qwerty" };
+        var playerTwo = new PlayerJsonDto() { Color = "Black", Name = "Jessica", Token = "zxcvb" };
+
+        var viewModel = new GameEditViewModel(new GameJsonDto()
+        {
+            PlayerOne = playerOne,
+            PlayerTwo = playerTwo,
+            Status = "finished",
+            PredominantColor = "Black"
+        }, new PlayerEntity(playerOne.Token, playerOne.Name));
+
+        // Act
+
+        // Assert
+        Assert.AreEqual("Black", viewModel.PredominantColor);
+        Assert.AreEqual("Tegenstander", viewModel.PredominantPlayer);
+        Assert.AreEqual("Jessica", viewModel.DominantPlayerDto.Name);
+        Assert.AreEqual("Teddy", viewModel.LoserPlayerDto.Name);
+    }
+
+    [Test]
+    public void PlayerTwo_Dominant_NotLoggedIn()
+    {
+        // Arrange
+        var playerOne = new PlayerJsonDto() { Color = "White", Name = "Teddy", Token = "qwerty" };
+        var playerTwo = new PlayerJsonDto() { Color = "Black", Name = "Jessica", Token = "zxcvb" };
+
+        var viewModel = new GameEditViewModel(new GameJsonDto()
+        {
+            PlayerOne = playerOne,
+            PlayerTwo = playerTwo,
+            Status = "finished",
+            PredominantColor = "Black"
+        }, new PlayerEntity(playerTwo.Token, playerTwo.Name));
+
+        // Act
+
+        // Assert
+        Assert.AreEqual("Black", viewModel.PredominantColor);
+        Assert.AreEqual("Ik", viewModel.PredominantPlayer);
+        Assert.AreEqual("Jessica", viewModel.DominantPlayerDto.Name);
+        Assert.AreEqual("Teddy", viewModel.LoserPlayerDto.Name);
     }
 }

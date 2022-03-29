@@ -33,4 +33,12 @@ public interface IPlayersRepository : IRepository<PlayerEntity>, IAsyncRepositor
     /// <returns>The database set.</returns>
     DbSet<PlayerEntity> GetDbSet();
 
+    /// <summary>
+    /// Updates the scores of the players.
+    /// </summary>
+    /// <param name="dominantColor">The dominant color.</param>
+    /// <param name="playerOne">Player one.</param>
+    /// <param name="playerTwo">Player two.</param>
+    void UpdatePlayerScores(string dominantColor, PlayerEntity playerOne, PlayerEntity playerTwo);
+
 }
