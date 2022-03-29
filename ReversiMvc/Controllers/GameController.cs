@@ -40,7 +40,7 @@ public class GameController : Controller
             return this.View();
         }
 
-        var entities = from game in games select new GameEditViewModel(game, this._currentPlayer);
+        var entities = from game in games orderby game.Id descending select new GameEditViewModel(game, this._currentPlayer);
 
         return this.View(new GameOverviewViewModel(entities, this._currentPlayer));
     }
