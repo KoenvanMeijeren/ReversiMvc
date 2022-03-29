@@ -15,7 +15,8 @@
             <th>Beschrijving</th>
             <th>Speler 1</th>
             <th>Speler 2</th>
-            <th>Huidige speler</th>
+            <th>Dominante kleur</th>
+            <th>Winnaar</th>
             <th>Status</th>
             <th></th>
         </tr>
@@ -29,7 +30,21 @@
                 <td>@Html.DisplayFor(modelItem => item.Description)</td>
                 <td>@Html.DisplayFor(modelItem => item.PlayerOne.Name)</td>
                 <td>@Html.DisplayFor(modelItem => item.PlayerTwo.Name)</td>
-                <td>@Html.DisplayFor(modelItem => item.CurrentPlayer.Name)</td>
+                <td>
+                    @if ("White".Equals(item.PredominantColor))
+                    {
+                        <div>Wit</div>
+                    }
+                    else if ("Black".Equals(item.PredominantColor))
+                    {
+                        <div>Zwart</div>
+                    }
+                    else
+                    {
+                        <div>Geen</div>
+                    }
+                </td>
+                <td>@Html.DisplayFor(modelItem => item.PredominantPlayer)</td>
                 <td>@Html.DisplayFor(modelItem => item.Status)</td>
 
                 <td>

@@ -9,10 +9,43 @@
         <h1>Reversi</h1>
         <p>@Html.DisplayFor(model => model.Description)</p>
         
-        <div class = "col-sm-2 fw-bold">
+        
+        <div class = "fw-bold">
+            Tegenstander
+        </div>
+        <div>
+            @Model.Opponent
+        </div>
+        
+        <div class = "col-sm-4 fw-bold">
+            Dominante kleur
+        </div>
+        <div class = "col-sm-8">
+            @if ("White".Equals(Model.PredominantColor))
+            {
+                <div>Wit</div>
+            }
+            else if ("Black".Equals(Model.PredominantColor))
+            {
+                <div>Zwart</div>
+            }
+            else
+            {
+                <div>Geen</div>
+            }
+        </div>
+        
+        <div class = "col-sm-4 fw-bold">
+            Winnaar
+        </div>
+        <div class = "col-sm-8">
+            @Model.PredominantPlayer
+        </div>
+        
+        <div class = "col-sm-4 fw-bold">
             Status
         </div>
-        <div class = "col-sm-10">
+        <div class = "col-sm-8">
             @if (!Model.IsPlayingOrEnded())
             {
                 <p>Wachten op start</p>

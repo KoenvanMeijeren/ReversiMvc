@@ -18,6 +18,10 @@ public class GameEditViewModel
     public PlayerDto CurrentPlayer => new PlayerDto(this._gameJsonDto?.CurrentPlayer);
     public PlayerEntity LoggedInPlayer { get; }
 
+    public string? Opponent { get; }
+    public string? PredominantColor { get; }
+    public string? PredominantPlayer { get; }
+    
     public Color[,] Board
     {
         get
@@ -47,10 +51,39 @@ public class GameEditViewModel
 
     }
 
-    public GameEditViewModel(GameJsonDto? gameJsonDto = null, PlayerEntity currentPlayer = null)
+    public GameEditViewModel(GameJsonDto? gameJsonDto = null, PlayerEntity loggedInPlayer = null)
     {
         this._gameJsonDto = gameJsonDto;
-        this.LoggedInPlayer = currentPlayer;
+        this.LoggedInPlayer = loggedInPlayer;
+        this.PredominantColor = gameJsonDto?.PredominantColor;
+        this.PredominantPlayer = "-";
+        if (gameJsonDto == null)
+        {
+            return;
+        }
+
+        this.Opponent = this.PlayerOne.Name;
+        if (!loggedInPlayer.Guid.Equals(this.PlayerTwo.Token))
+        {
+            this.Opponent = this.PlayerTwo.Name;
+        }
+        
+        if (Color.White.ToString().Equals(gameJsonDto.PredominantColor))
+        {
+            this.PredominantPlayer = "Tegenstander";
+            if (this.LoggedInPlayer.Guid.Equals(this.PlayerOne.Token))
+            {
+                this.PredominantPlayer = "Ik";
+            }
+        }
+        else if (Color.Black.ToString().Equals(gameJsonDto.PredominantColor))
+        {
+            this.PredominantPlayer = "Tegenstander";
+            if (this.LoggedInPlayer.Guid.Equals(this.PlayerTwo.Token))
+            {
+                this.PredominantPlayer = "Ik";
+            }
+        }
     }
 
     public bool CanAddPlayerOne()
