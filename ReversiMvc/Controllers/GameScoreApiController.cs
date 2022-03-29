@@ -14,11 +14,13 @@ public class GameScoreController : ControllerBase
 {
     private readonly IPlayersRepository _playersRepository;
     private readonly IGameRepository _gameRepository;
+    private readonly IRepository<GameScoreEntity> _gameScoreRepository;
 
-    public GameScoreController(IPlayersRepository playersRepository, IGameRepository gameRepository)
+    public GameScoreController(IPlayersRepository playersRepository, IGameRepository gameRepository, IRepository<GameScoreEntity> gameScoreRepository)
     {
         this._playersRepository = playersRepository;
         this._gameRepository = gameRepository;
+        this._gameScoreRepository = gameScoreRepository;
     }
     
     [HttpGet("{token}")]
@@ -28,6 +30,13 @@ public class GameScoreController : ControllerBase
         if (entity == null)
         {
             return this.NotFound();
+        }
+
+        var gameScoreEntity = this._gameScoreRepository.All()
+            .FirstOrDefault(score => score.GameToken != null && score.GameToken.Equals(entity.Token));
+        if (gameScoreEntity != null)
+        {
+            return this.BadRequest();
         }
 
         var gameViewModel = new GameEditViewModel(entity);
@@ -41,6 +50,7 @@ public class GameScoreController : ControllerBase
         }
         
         this._playersRepository.UpdatePlayerScores(dominantColor, playerOne, playerTwo);
+        this._gameScoreRepository.Add(new GameScoreEntity(entity.Token));
 
         return this.Ok();
     }

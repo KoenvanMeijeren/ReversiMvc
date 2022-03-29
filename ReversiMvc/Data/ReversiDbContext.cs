@@ -6,6 +6,8 @@ public class ReversiDbContext : DbContext
 {
     public DbSet<PlayerEntity> Players { get; set; }
 
+    public DbSet<GameScoreEntity> GameScores { get; set; }
+
     public ReversiDbContext(DbContextOptions<ReversiDbContext> options) : base(options)
     {
     }

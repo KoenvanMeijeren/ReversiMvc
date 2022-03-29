@@ -2,17 +2,19 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ReversiMvc.Data;
 
 #nullable disable
 
-namespace ReversiMvc.Data.Migrations;
+namespace ReversiMvc.Migrations;
 
 [DbContext(typeof(ReversiDbContext))]
-partial class ReversiDbContextModelSnapshot : ModelSnapshot
+[Migration("20220329092158_AddGameScore")]
+partial class AddGameScore
 {
-    protected override void BuildModel(ModelBuilder modelBuilder)
+    protected override void BuildTargetModel(ModelBuilder modelBuilder)
     {
 #pragma warning disable 612, 618
         modelBuilder

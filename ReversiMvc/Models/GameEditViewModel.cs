@@ -21,7 +21,6 @@ public class GameEditViewModel
     public PlayerEntity LoggedInPlayer { get; }
     public PlayerDto DominantPlayerDto { get; }
     public PlayerDto LoserPlayerDto { get; }
-
     public string? Opponent { get; }
     public string? PredominantColor { get; }
     public string? PredominantPlayer { get; }
