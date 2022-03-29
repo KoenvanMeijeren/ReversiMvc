@@ -44,7 +44,7 @@ public class GameScoreController : ControllerBase
         var dominantColor = gameViewModel.PredominantColor;
         var playerOne = this._playersRepository.Get(gameViewModel.PlayerOne.Token);
         var playerTwo = this._playersRepository.Get(gameViewModel.PlayerTwo.Token);
-        if (playerTwo == null || playerOne == null || dominantColor == null || dominantColor == GameEditViewModel.UndefinedValue)
+        if (playerTwo == null || playerOne == null || dominantColor is null or GameEditViewModel.UndefinedValue)
         {
             return this.BadRequest();
         }
