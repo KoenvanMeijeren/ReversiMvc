@@ -36,7 +36,7 @@ public class GameScoreController : ControllerBase
             .FirstOrDefault(score => score.GameToken != null && score.GameToken.Equals(entity.Token));
         if (gameScoreEntity != null)
         {
-            return this.BadRequest();
+            return this.Ok();
         }
 
         var gameViewModel = new GameEditViewModel(entity);
