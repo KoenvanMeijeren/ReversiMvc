@@ -14,7 +14,7 @@ public class GameScoreEntity
 
     public GameScoreEntity() : this(string.Empty)
     {
-        
+
     }
 
     public GameScoreEntity(string? gameToken)

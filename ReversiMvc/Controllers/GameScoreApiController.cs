@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -22,7 +22,7 @@ public class GameScoreController : ControllerBase
         this._gameRepository = gameRepository;
         this._gameScoreRepository = gameScoreRepository;
     }
-    
+
     [HttpGet("{token}")]
     public async Task<ActionResult> GameScore(string? token)
     {
@@ -40,7 +40,7 @@ public class GameScoreController : ControllerBase
         }
 
         var gameViewModel = new GameEditViewModel(entity);
-        
+
         var dominantColor = gameViewModel.PredominantColor;
         var playerOne = this._playersRepository.Get(gameViewModel.PlayerOne.Token);
         var playerTwo = this._playersRepository.Get(gameViewModel.PlayerTwo.Token);
@@ -48,7 +48,7 @@ public class GameScoreController : ControllerBase
         {
             return this.BadRequest();
         }
-        
+
         this._playersRepository.UpdatePlayerScores(dominantColor, playerOne, playerTwo);
         this._gameScoreRepository.Add(new GameScoreEntity(entity.Token));
 

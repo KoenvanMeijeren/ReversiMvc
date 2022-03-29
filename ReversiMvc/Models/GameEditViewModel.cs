@@ -9,7 +9,7 @@ public class GameEditViewModel
 {
 
     public const string UndefinedValue = "-";
-    
+
     private readonly GameJsonDto? _gameJsonDto;
 
     public int? Id => this._gameJsonDto?.Id;
@@ -24,7 +24,7 @@ public class GameEditViewModel
     public string? Opponent { get; }
     public string? PredominantColor { get; }
     public string? PredominantPlayer { get; }
-    
+
     public Color[,] Board
     {
         get
@@ -75,7 +75,7 @@ public class GameEditViewModel
         {
             return;
         }
-        
+
         if (Color.White.ToString().Equals(gameJsonDto.PredominantColor))
         {
             this.PredominantPlayer = "Tegenstander";
@@ -94,7 +94,7 @@ public class GameEditViewModel
             {
                 this.PredominantPlayer = "Ik";
             }
-            
+
             this.DominantPlayerDto = this.PlayerTwo;
             this.LoserPlayerDto = this.PlayerOne;
         }

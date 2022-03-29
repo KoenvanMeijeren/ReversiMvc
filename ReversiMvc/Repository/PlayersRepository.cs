@@ -59,7 +59,7 @@ public class PlayersRepository : RepositoryDatabaseBase<PlayerEntity>, IPlayersR
         {
             playerOne.Victories++;
             playerTwo.Losses++;
-        } 
+        }
         else if (Color.Black.ToString().Equals(dominantColor))
         {
             playerOne.Losses++;
