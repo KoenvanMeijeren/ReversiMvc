@@ -8,6 +8,8 @@ namespace ReversiMvc.Models;
 public class GameEditViewModel
 {
 
+    public const string UndefinedValue = "-";
+    
     private readonly GameJsonDto? _gameJsonDto;
 
     public int? Id => this._gameJsonDto?.Id;
@@ -57,7 +59,7 @@ public class GameEditViewModel
     {
         this._gameJsonDto = gameJsonDto;
         this.PredominantColor = gameJsonDto?.PredominantColor;
-        this.PredominantPlayer = "-";
+        this.PredominantPlayer = UndefinedValue;
         if (gameJsonDto == null || loggedInPlayer == null)
         {
             return;
