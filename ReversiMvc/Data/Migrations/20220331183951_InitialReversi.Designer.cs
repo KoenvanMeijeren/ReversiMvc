@@ -11,8 +11,8 @@ using ReversiMvc.Data;
 namespace ReversiMvc.Migrations;
 
 [DbContext(typeof(ReversiDbContext))]
-[Migration("20220329092158_AddGameScore")]
-partial class AddGameScore
+[Migration("20220331183951_InitialReversi")]
+partial class InitialReversi
 {
     protected override void BuildTargetModel(ModelBuilder modelBuilder)
     {
@@ -32,7 +32,6 @@ partial class AddGameScore
             SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
             b.Property<string>("GameToken")
-                .IsRequired()
                 .HasColumnType("nvarchar(max)");
 
             b.HasKey("Id");
