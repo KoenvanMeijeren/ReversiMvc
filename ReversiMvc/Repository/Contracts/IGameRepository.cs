@@ -37,6 +37,13 @@ public interface IGameRepository : IAsyncRepository<GameJsonDto>
     Task<GameJsonDto?> StartAsync(string token);
 
     /// <summary>
+    /// Executes the do move action in the game.
+    /// </summary>
+    /// <param name="gameDoMoveDto">The do move dto.</param>
+    /// <returns>The result.</returns>
+    Task<GameJsonDto?> DoMoveAsync(GameDoMoveDto gameDoMoveDto);
+
+    /// <summary>
     /// Quits the game.
     /// </summary>
     /// <param name="token">The token of the game.</param>
