@@ -36,7 +36,11 @@ public class GameJsonDto : IEntity
 
     public string? PredominantColor { get; set; }
     public string? Board { get; set; }
+    public string? PossibleMoves { get; set; }
 
     public string? Status { get; set; }
+
+    public int ConqueredWhiteFiches { get; set; }
+    public int ConqueredBlackFiches { get; set; }
 
 }

@@ -85,6 +85,19 @@ public class GameRepository : IGameRepository
     }
 
     /// <inheritdoc />
+    public async Task<GameJsonDto?> DoMoveAsync(GameDoMoveDto gameDoMoveDto)
+    {
+        var client = GameRepository.CreateHttpClient("/do-move", "text/plain");
+        var request = new HttpRequestMessage(HttpMethod.Put, client.BaseAddress)
+        {
+            Content = JsonContent.Create(gameDoMoveDto)
+        };
+        var response = await client.SendAsync(request);
+
+        return !response.IsSuccessStatusCode ? null : response.Content.ReadFromJsonAsync<GameJsonDto>().Result;
+    }
+
+    /// <inheritdoc />
     public async Task<GameJsonDto?> QuitAsync(string token)
     {
         var client = GameRepository.CreateHttpClient($"/{token}/quit", "text/plain");
