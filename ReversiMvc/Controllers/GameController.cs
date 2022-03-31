@@ -37,7 +37,7 @@ public class GameController : Controller
         var games = await this._repository.AllAsync();
         if (games == null)
         {
-            return this.View();
+            return this.View(new GameOverviewViewModel(null, this._currentPlayer));
         }
 
         var entities = from game in games orderby game.Id descending select new GameEditViewModel(game, this._currentPlayer);
