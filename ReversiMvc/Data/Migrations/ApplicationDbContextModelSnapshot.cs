@@ -17,35 +17,30 @@ partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     protected override void BuildModel(ModelBuilder modelBuilder)
     {
 #pragma warning disable 612, 618
-        modelBuilder
-            .HasAnnotation("ProductVersion", "6.0.3")
-            .HasAnnotation("Relational:MaxIdentifierLength", 128);
-
-        SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+        modelBuilder.HasAnnotation("ProductVersion", "6.0.3");
 
         modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
         {
             b.Property<string>("Id")
-                .HasColumnType("nvarchar(450)");
+                .HasColumnType("TEXT");
 
             b.Property<string>("ConcurrencyStamp")
                 .IsConcurrencyToken()
-                .HasColumnType("nvarchar(max)");
+                .HasColumnType("TEXT");
 
             b.Property<string>("Name")
                 .HasMaxLength(256)
-                .HasColumnType("nvarchar(256)");
+                .HasColumnType("TEXT");
 
             b.Property<string>("NormalizedName")
                 .HasMaxLength(256)
-                .HasColumnType("nvarchar(256)");
+                .HasColumnType("TEXT");
 
             b.HasKey("Id");
 
             b.HasIndex("NormalizedName")
                 .IsUnique()
-                .HasDatabaseName("RoleNameIndex")
-                .HasFilter("[NormalizedName] IS NOT NULL");
+                .HasDatabaseName("RoleNameIndex");
 
             b.ToTable("AspNetRoles", (string)null);
 
@@ -53,14 +48,14 @@ partial class ApplicationDbContextModelSnapshot : ModelSnapshot
                 new
                 {
                     Id = "37186721-a6e7-418f-8a56-1c3b6596264f",
-                    ConcurrencyStamp = "ea5a1e65-1820-440d-86fa-bede74397f89",
+                    ConcurrencyStamp = "4a373a9a-fd22-42fe-aa85-04fd88478602",
                     Name = "Admin",
                     NormalizedName = "ADMIN"
                 },
                 new
                 {
-                    Id = "9851ef05-ebcb-4859-b79e-6486e5b99692",
-                    ConcurrencyStamp = "dc524420-8634-41d8-bd8a-e6fd1a39af7e",
+                    Id = "3c3d7381-c495-4622-aa09-6ce8fecfb8bf",
+                    ConcurrencyStamp = "8372c6e6-e7b3-428d-89f6-364754c1fac6",
                     Name = "Mediator",
                     NormalizedName = "MEDIATOR"
                 });
@@ -70,19 +65,17 @@ partial class ApplicationDbContextModelSnapshot : ModelSnapshot
         {
             b.Property<int>("Id")
                 .ValueGeneratedOnAdd()
-                .HasColumnType("int");
-
-            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                .HasColumnType("INTEGER");
 
             b.Property<string>("ClaimType")
-                .HasColumnType("nvarchar(max)");
+                .HasColumnType("TEXT");
 
             b.Property<string>("ClaimValue")
-                .HasColumnType("nvarchar(max)");
+                .HasColumnType("TEXT");
 
             b.Property<string>("RoleId")
                 .IsRequired()
-                .HasColumnType("nvarchar(450)");
+                .HasColumnType("TEXT");
 
             b.HasKey("Id");
 
@@ -94,54 +87,54 @@ partial class ApplicationDbContextModelSnapshot : ModelSnapshot
         modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
         {
             b.Property<string>("Id")
-                .HasColumnType("nvarchar(450)");
+                .HasColumnType("TEXT");
 
             b.Property<int>("AccessFailedCount")
-                .HasColumnType("int");
+                .HasColumnType("INTEGER");
 
             b.Property<string>("ConcurrencyStamp")
                 .IsConcurrencyToken()
-                .HasColumnType("nvarchar(max)");
+                .HasColumnType("TEXT");
 
             b.Property<string>("Email")
                 .HasMaxLength(256)
-                .HasColumnType("nvarchar(256)");
+                .HasColumnType("TEXT");
 
             b.Property<bool>("EmailConfirmed")
-                .HasColumnType("bit");
+                .HasColumnType("INTEGER");
 
             b.Property<bool>("LockoutEnabled")
-                .HasColumnType("bit");
+                .HasColumnType("INTEGER");
 
             b.Property<DateTimeOffset?>("LockoutEnd")
-                .HasColumnType("datetimeoffset");
+                .HasColumnType("TEXT");
 
             b.Property<string>("NormalizedEmail")
                 .HasMaxLength(256)
-                .HasColumnType("nvarchar(256)");
+                .HasColumnType("TEXT");
 
             b.Property<string>("NormalizedUserName")
                 .HasMaxLength(256)
-                .HasColumnType("nvarchar(256)");
+                .HasColumnType("TEXT");
 
             b.Property<string>("PasswordHash")
-                .HasColumnType("nvarchar(max)");
+                .HasColumnType("TEXT");
 
             b.Property<string>("PhoneNumber")
-                .HasColumnType("nvarchar(max)");
+                .HasColumnType("TEXT");
 
             b.Property<bool>("PhoneNumberConfirmed")
-                .HasColumnType("bit");
+                .HasColumnType("INTEGER");
 
             b.Property<string>("SecurityStamp")
-                .HasColumnType("nvarchar(max)");
+                .HasColumnType("TEXT");
 
             b.Property<bool>("TwoFactorEnabled")
-                .HasColumnType("bit");
+                .HasColumnType("INTEGER");
 
             b.Property<string>("UserName")
                 .HasMaxLength(256)
-                .HasColumnType("nvarchar(256)");
+                .HasColumnType("TEXT");
 
             b.HasKey("Id");
 
@@ -150,8 +143,7 @@ partial class ApplicationDbContextModelSnapshot : ModelSnapshot
 
             b.HasIndex("NormalizedUserName")
                 .IsUnique()
-                .HasDatabaseName("UserNameIndex")
-                .HasFilter("[NormalizedUserName] IS NOT NULL");
+                .HasDatabaseName("UserNameIndex");
 
             b.ToTable("AspNetUsers", (string)null);
 
@@ -160,13 +152,13 @@ partial class ApplicationDbContextModelSnapshot : ModelSnapshot
                 {
                     Id = "a18be9c0-aa65-4af8-bd17-00bd9344e575",
                     AccessFailedCount = 0,
-                    ConcurrencyStamp = "559f9059-c1ed-472a-8d1f-872d70b54d6d",
+                    ConcurrencyStamp = "b8a34d5d-3cd9-4e86-ac43-309c950a7c07",
                     Email = "admin@nimda.com",
                     EmailConfirmed = true,
                     LockoutEnabled = false,
                     NormalizedEmail = "ADMIN@NIMDA.COM",
                     NormalizedUserName = "ADMIN@NIMDA.COM",
-                    PasswordHash = "AQAAAAEAACcQAAAAEAD0biRef0xPGVgKUNyU/ejEpxU1ysqFAlzjyj0jl+V3aoDcL+TIfdIgjqbbOJKg4Q==",
+                    PasswordHash = "AQAAAAEAACcQAAAAEPp/6bNXA0ggnaMHhgnFpyu+EeSSZbAkEhHPKJRd/amrTgxud68CR/XhoLA41Cs9rQ==",
                     PhoneNumberConfirmed = false,
                     SecurityStamp = "",
                     TwoFactorEnabled = false,
@@ -178,19 +170,17 @@ partial class ApplicationDbContextModelSnapshot : ModelSnapshot
         {
             b.Property<int>("Id")
                 .ValueGeneratedOnAdd()
-                .HasColumnType("int");
-
-            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                .HasColumnType("INTEGER");
 
             b.Property<string>("ClaimType")
-                .HasColumnType("nvarchar(max)");
+                .HasColumnType("TEXT");
 
             b.Property<string>("ClaimValue")
-                .HasColumnType("nvarchar(max)");
+                .HasColumnType("TEXT");
 
             b.Property<string>("UserId")
                 .IsRequired()
-                .HasColumnType("nvarchar(450)");
+                .HasColumnType("TEXT");
 
             b.HasKey("Id");
 
@@ -203,18 +193,18 @@ partial class ApplicationDbContextModelSnapshot : ModelSnapshot
         {
             b.Property<string>("LoginProvider")
                 .HasMaxLength(128)
-                .HasColumnType("nvarchar(128)");
+                .HasColumnType("TEXT");
 
             b.Property<string>("ProviderKey")
                 .HasMaxLength(128)
-                .HasColumnType("nvarchar(128)");
+                .HasColumnType("TEXT");
 
             b.Property<string>("ProviderDisplayName")
-                .HasColumnType("nvarchar(max)");
+                .HasColumnType("TEXT");
 
             b.Property<string>("UserId")
                 .IsRequired()
-                .HasColumnType("nvarchar(450)");
+                .HasColumnType("TEXT");
 
             b.HasKey("LoginProvider", "ProviderKey");
 
@@ -226,10 +216,10 @@ partial class ApplicationDbContextModelSnapshot : ModelSnapshot
         modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
         {
             b.Property<string>("UserId")
-                .HasColumnType("nvarchar(450)");
+                .HasColumnType("TEXT");
 
             b.Property<string>("RoleId")
-                .HasColumnType("nvarchar(450)");
+                .HasColumnType("TEXT");
 
             b.HasKey("UserId", "RoleId");
 
@@ -248,18 +238,18 @@ partial class ApplicationDbContextModelSnapshot : ModelSnapshot
         modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
         {
             b.Property<string>("UserId")
-                .HasColumnType("nvarchar(450)");
+                .HasColumnType("TEXT");
 
             b.Property<string>("LoginProvider")
                 .HasMaxLength(128)
-                .HasColumnType("nvarchar(128)");
+                .HasColumnType("TEXT");
 
             b.Property<string>("Name")
                 .HasMaxLength(128)
-                .HasColumnType("nvarchar(128)");
+                .HasColumnType("TEXT");
 
             b.Property<string>("Value")
-                .HasColumnType("nvarchar(max)");
+                .HasColumnType("TEXT");
 
             b.HasKey("UserId", "LoginProvider", "Name");
 
