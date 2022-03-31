@@ -9,7 +9,7 @@ namespace ReversiMvc.Repository;
 public class GameRepository : IGameRepository
 {
     private static string s_apiUri = "";
-    
+
     public GameRepository(ApiConfiguration apiConfiguration)
     {
         GameRepository.s_apiUri = apiConfiguration.Url;
