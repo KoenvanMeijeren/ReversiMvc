@@ -46,6 +46,7 @@ builder.Services.AddAuthorization(options =>
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddSingleton(builder.Configuration.GetSection("Recaptcha").Get<RecaptchaConfiguration>());
+builder.Services.AddSingleton(builder.Configuration.GetSection("Api").Get<ApiConfiguration>());
 builder.Services.AddSingleton<IRecaptcha, Recaptcha>();
 builder.Services.AddSingleton<IAuthorizationHandler, IsAdminHandler>();
 builder.Services.AddSingleton<IAuthorizationHandler, IsMediatorHandler>();

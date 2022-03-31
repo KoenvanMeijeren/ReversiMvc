@@ -2,12 +2,18 @@
 
 using System.Net.Http.Headers;
 using ReversiMvc.Models.DataTransferObject;
+using ReversiMvc.Services;
 
 namespace ReversiMvc.Repository;
 
 public class GameRepository : IGameRepository
 {
-    private const string ApiUri = "https://localhost:7042/api/Game";
+    private static string s_apiUri = "";
+    
+    public GameRepository(ApiConfiguration apiConfiguration)
+    {
+        GameRepository.s_apiUri = apiConfiguration.Url;
+    }
 
     /// <inheritdoc />
     Task<int> IAsyncRepository<GameJsonDto>.AddAsync(GameJsonDto entity)
@@ -71,7 +77,7 @@ public class GameRepository : IGameRepository
     /// <inheritdoc />
     public async Task<GameJsonDto?> StartAsync(string token)
     {
-        var client = GameRepository.CreateHttpClient("/{token}/start", "text/plain");
+        var client = GameRepository.CreateHttpClient($"/{token}/start", "text/plain");
         var request = new HttpRequestMessage(HttpMethod.Put, client.BaseAddress);
         var response = await client.SendAsync(request);
 
@@ -81,7 +87,7 @@ public class GameRepository : IGameRepository
     /// <inheritdoc />
     public async Task<GameJsonDto?> QuitAsync(string token)
     {
-        var client = GameRepository.CreateHttpClient("/{token}/quit", "text/plain");
+        var client = GameRepository.CreateHttpClient($"/{token}/quit", "text/plain");
         var request = new HttpRequestMessage(HttpMethod.Put, client.BaseAddress);
         var response = await client.SendAsync(request);
 
@@ -123,7 +129,7 @@ public class GameRepository : IGameRepository
             return null;
         }
 
-        var client = GameRepository.CreateHttpClient("/{token}");
+        var client = GameRepository.CreateHttpClient($"/{token}");
         var response = await client.GetAsync(client.BaseAddress);
 
         return !response.IsSuccessStatusCode ? null : response.Content.ReadFromJsonAsync<GameJsonDto>().Result;
@@ -137,14 +143,14 @@ public class GameRepository : IGameRepository
             return null;
         }
 
-        var client = GameRepository.CreateHttpClient("/player-one/{token}/active");
+        var client = GameRepository.CreateHttpClient($"/player-one/{token}/active");
         var response = await client.GetAsync(client.BaseAddress);
         if (response.IsSuccessStatusCode)
         {
             return response.Content.ReadFromJsonAsync<GameJsonDto>().Result;
         }
 
-        client = GameRepository.CreateHttpClient("/player-two/{token}/active");
+        client = GameRepository.CreateHttpClient($"/player-two/{token}/active");
         response = await client.GetAsync(client.BaseAddress);
 
         return !response.IsSuccessStatusCode ? null : response.Content.ReadFromJsonAsync<GameJsonDto>().Result;
@@ -153,7 +159,7 @@ public class GameRepository : IGameRepository
     private static HttpClient CreateHttpClient(string uri, string accept = "application/json")
     {
         var client = new HttpClient();
-        client.BaseAddress = new Uri($"{GameRepository.ApiUri}{uri}");
+        client.BaseAddress = new Uri($"{GameRepository.s_apiUri}{uri}");
         client.Timeout = new TimeSpan(0, 0, 90);
         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(accept));
 

@@ -95,7 +95,7 @@ public class GameController : Controller
         var gameEntity = await this._repository.Get(token);
         if (gameEntity == null)
         {
-            this._logger.LogWarning("Player {Player} has tried to view the details of the game {Game} while playing another game", this._currentUser, gameEntity.Token);
+            this._logger.LogWarning("Player {Player} has tried to view the details of the game {Game} while playing another game", this._currentUser, gameEntity?.Token);
 
             return this.View("InvalidActionMessage", new InvalidActionViewModel { Message = "Het gekozen spel bestaat niet!" });
         }
