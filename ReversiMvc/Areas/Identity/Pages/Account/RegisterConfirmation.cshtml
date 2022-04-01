@@ -6,17 +6,13 @@
 
 <h1>@ViewData["Title"]</h1>
 @{
-    if (@Model.DisplayConfirmAccountLink)
-    {
-<p>
-    <a id="confirm-link" href="@Model.EmailConfirmationUrl">Klik hier om uw account te bevestigen.</a>
-</p>
-    }
-    else
+    if (!Model.DisplayConfirmAccountLink)
     {
 <p>
         Controleer uw mail om uw account te bevestigen.
 </p>
     }
 }
+
+<partial name="_StatusMessage" model="Model.StatusMessage" />
 
