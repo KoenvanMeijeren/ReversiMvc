@@ -48,7 +48,7 @@ public class RegisterConfirmationModel : PageModel
     /// </summary>
     [TempData]
     public string StatusMessage { get; set; }
-    
+
     public async Task<IActionResult> OnGetAsync(string email, string returnUrl = null)
     {
         if (email == null)
