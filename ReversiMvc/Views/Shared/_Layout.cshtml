@@ -2,12 +2,35 @@
 @inject ICurrentUserService _currentUserService
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
 <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="utf-8">
+    <meta content="width=device-width,initial-scale=1" name="viewport">
     <title>@ViewData["Title"] - Reversi</title>
+    
+    <meta content="Reversi" name="description">
+    <meta content="Reversi, Game" name="keywords">
+    <meta content="Koen van Meijeren" name="author">
+    <link href="~/dist/icons/favicons/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180">
+    <link href="~/dist/icons/favicons/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png">
+    <link href="~/dist/icons/favicons/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png">
+    <link color="#5bbad5" href="~/dist/icons/favicons/safari-pinned-tab.svg" rel="mask-icon">
+    <meta content="#da532c" name="msapplication-TileColor">
+    <meta content="#ffffff" name="theme-color">
 
+    <meta http-equiv="Content-Security-Policy" content="
+            default-src 'none';
+            connect-src 'self' https://api.openweathermap.org/;
+            script-src 'self' https://www.google.com https://www.gstatic.com;
+            script-src-elem 'self' https://www.google.com https://www.gstatic.com;
+            font-src 'self';
+            style-src 'self' 'unsafe-inline';
+            img-src 'self';
+            base-uri 'self';
+            form-action 'self';
+            frame-src 'self' https://www.google.com;
+        ">
+    
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
     <link rel="stylesheet" href="~/dist/app.min.css" asp-append-version="true"/>
 </head>
